@@ -3,10 +3,17 @@ from game_components.table import Table
 
 class Assistant:
     table = None
+    __extract = "extract"
 
     def __init__(self):
         self.table = Table()
+        # self.table.extractor()
 
+    def extractor(self):
+        self.table = Table(self.__extract)
+        self.table.extractor()
+
+    # main loop
     def start(self):
         while True:
             self.table.analyze()
@@ -23,4 +30,5 @@ class Assistant:
 
 if __name__ == '__main__':
     assistant = Assistant()
-    assistant.start()
+    assistant.extractor()
+    # assistant.start()

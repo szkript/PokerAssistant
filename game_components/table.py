@@ -6,6 +6,7 @@ from os.path import join, isdir
 class Table:
     # folder paths
     __SCREENSHOT_FOLDER = "desktop_screenshots"
+    __DESKTOP_IMAGE_FOLDERS_NUM = 0
     __GATHERING_FOLDER = "image_gathering"
     __BASE_PATH = None
 
@@ -21,8 +22,11 @@ class Table:
     middle = None
     dealer_position = None
 
-    def __init__(self):
-        self.__set_folder_path()
+    def __init__(self, mode="live"):
+        if mode == "live":
+            self.__set_folder_path()
+        if mode == "extract":
+            self.__DESKTOP_IMAGE_FOLDERS_NUM = len(self.__get_directories(self.__SCREENSHOT_FOLDER))
         # create and set next folder for observe images
         # classifier init
 
@@ -46,7 +50,7 @@ class Table:
         actual_path = join(os.getcwd(), self.__SCREENSHOT_FOLDER)
         if not isdir(actual_path):
             os.makedirs(actual_path)
-        directories = [x[0] for x in os.walk(actual_path)]
+        directories = self.__get_directories(actual_path)
         try:
             next_folder = str(int(directories[-1][-1]) + 1)
         except ValueError:
@@ -58,3 +62,15 @@ class Table:
             os.makedirs(directory)
 
         self.__BASE_PATH = directory
+
+    def extractor(self):
+        self.__read_images()
+
+    # reads existing images from given folder
+    def __read_images(self):
+        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM}:")
+
+    # return directories in given directory
+    @staticmethod
+    def __get_directories(path):
+        return [x[0] for x in os.walk(path)]
