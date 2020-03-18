@@ -3,14 +3,16 @@ from game_components.table import Table
 
 class Assistant:
     table = None
-    __extract = "extract"
+    __mode = ["live", "extract"]
 
     def __init__(self):
-        self.table = Table()
+        # TODO: 2 way init
+        # self.table = Table(self.__mode[0])
         # self.table.extractor()
+        pass
 
     def extractor(self):
-        self.table = Table(self.__extract)
+        self.table = Table(self.__mode[1])
         self.table.extractor()
 
     # main loop

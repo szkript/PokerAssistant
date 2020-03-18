@@ -22,11 +22,12 @@ class Table:
     middle = None
     dealer_position = None
 
-    def __init__(self, mode="live"):
+    def __init__(self, mode):
         if mode == "live":
             self.__set_folder_path()
         if mode == "extract":
-            self.__DESKTOP_IMAGE_FOLDERS_NUM = len(self.__get_directories(self.__SCREENSHOT_FOLDER))
+            # TODO: fixing number of folders
+            self.__DESKTOP_IMAGE_FOLDERS_NUM = self.__get_directories(self.__SCREENSHOT_FOLDER)
         # create and set next folder for observe images
         # classifier init
 
