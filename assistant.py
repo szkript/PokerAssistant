@@ -10,8 +10,15 @@ class Assistant:
     def start(self):
         while True:
             self.table.analyze()
-            if self.table.get_img_count() > 10:
+
+            # testing limit
+            if self.__loop_limiter():
                 break
+
+    def __loop_limiter(self):
+        if self.table.get_img_count() > 10:
+            return True
+        return False
 
 
 if __name__ == '__main__':

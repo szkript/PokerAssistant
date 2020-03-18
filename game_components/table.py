@@ -4,37 +4,44 @@ from os.path import join, isdir
 
 
 class Table:
+    # folder paths
     __SCREENSHOT_FOLDER = "desktop_screenshots"
     __GATHERING_FOLDER = "image_gathering"
     __BASE_PATH = None
 
+    # classifier model
+    __classifier = None
+
+    # for image counting
+    __img_count = 0
+    __current_file_name = None
+
+    # built up objects from prediction
     hand = None
     middle = None
     dealer_position = None
-
-    __classifier = None
-
-    __img_count = 0
-    __current_file_name = None
 
     def __init__(self):
         self.__set_folder_path()
         # create and set next folder for observe images
         # classifier init
-        pass
 
+    # returns count of images
     def get_img_count(self):
         return self.__img_count
 
+    # for testing
     def analyze(self):
         self.__take_screenshot()
 
+    # take and save screenshot, sets file path in __current_file_name
     def __take_screenshot(self):
         screenshot = pyautogui.screenshot()
         self.__current_file_name = f'{self.__BASE_PATH}\\desktop-{self.__img_count}.jpg'
         screenshot.save(self.__current_file_name)
         self.__img_count += 1
 
+    # sets and create new folder for every instance
     def __set_folder_path(self):
         actual_path = join(os.getcwd(), self.__SCREENSHOT_FOLDER)
         if not isdir(actual_path):
@@ -46,7 +53,7 @@ class Table:
             next_folder = str(0)
 
         directory = actual_path + "\\" + next_folder
-        print("The current working directory is %s" % directory + "\n")
+        print(f"The current working directory is {directory} \n")
         if not isdir(directory):
             os.makedirs(directory)
 
