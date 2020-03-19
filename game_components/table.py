@@ -78,6 +78,10 @@ class Table:
     def __load_image_to_memory(self):
         self.__table_img_loaded = cv2.imread(self.__current_file_name)
 
+    # predict prepared images and set objects in their place
+    def __recognize_objects(self, prepared_images):
+        pass
+
     # reads existing images from given folder
     def __read_images(self):
         if self.__DESKTOP_IMAGE_FOLDERS_NUM < 0:
@@ -94,6 +98,17 @@ class Table:
                 self.__load_image_to_memory()
                 # crop table from __table_img_loaded and update with cropped image to serve as base table
                 self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, position.table_pos)
+
+                # TODO: analyze table
+                extracted_objects = []
+                for n, game_obj in enumerate(self.__calculated_positions):
+                    cropped = Utils.crop_at_pos(self.__table_img_loaded, game_obj)
+                    fn = f"gateway/{n}.jpg"
+                    Utils.save_image(cropped, fn)
+                    reloaded_img = Utils.preprocess_image(fn)
+                    extracted_objects.append(reloaded_img)
+
+                self.__recognize_objects(extracted_objects)
 
                 # TODO: image extractor controller here
                 user_input = input("gimmme some input biatch\n")
@@ -114,4 +129,3 @@ class Table:
                 break
             except ValueError:
                 break
-

@@ -1,6 +1,8 @@
 from os.path import join, isdir
+from keras.preprocessing import image
 import os
 import cv2
+import numpy as np
 
 
 class Utils:
@@ -59,3 +61,10 @@ class Utils:
                 tmp["x"] += tmp["w"] + margin
             poscalc.append(tmp)
         return poscalc
+
+    @staticmethod
+    def preprocess_image(img_path):
+        processing = image.load_img(img_path, target_size=(64, 64))
+        processing = image.img_to_array(processing)
+        processing = np.expand_dims(processing, axis=0)
+        return processing
