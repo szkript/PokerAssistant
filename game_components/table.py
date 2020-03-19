@@ -2,7 +2,7 @@ from utils import Utils
 import pyautogui
 import os
 import cv2
-from os.path import join, isdir
+from os.path import join
 from game_components import positions as position
 
 
@@ -58,8 +58,7 @@ class Table:
     # sets and create new folder for every instance
     def __set_folder_path(self):
         actual_path = join(os.getcwd(), self.__SCREENSHOT_FOLDER)
-        if not isdir(actual_path):
-            os.makedirs(actual_path)
+        Utils.validate_path(actual_path)
         directories = Utils.get_directories(actual_path)
         try:
             next_folder = str(int(directories[-1][-1]) + 1)
@@ -68,19 +67,12 @@ class Table:
 
         directory = actual_path + "\\" + next_folder
         print(f"The current working directory is {directory} \n")
-        if not isdir(directory):
-            os.makedirs(directory)
+        Utils.validate_path(directory)
 
         self.__BASE_PATH = directory
 
     def __load_image_to_memory(self):
         self.__table_img_loaded = cv2.imread(self.__current_file_name)
-
-    # crop image at given params
-    @staticmethod
-    def crop_at_pos(img, coordinates):
-        return img[coordinates["y"]:coordinates["y"] + coordinates["h"],
-               coordinates["x"]:coordinates["x"] + coordinates["w"]]
 
     # reads existing images from given folder
     def __read_images(self):
@@ -93,23 +85,29 @@ class Table:
             try:
                 print(f'image num {self.__img_count}')
                 # building file name
-                self.__current_file_name = f'{join(self.__SCREENSHOT_FOLDER, selected_folder)}\\desktop-{self.__img_count}.jpg'
+                self.__current_file_name = f'{join(self.__SCREENSHOT_FOLDER, selected_folder)}\\desktop-{str(self.__img_count)}.jpg'
                 # open image by filename and store its content in variable -> __table_img_loaded
                 self.__load_image_to_memory()
                 # crop table from __table_img_loaded and update with cropped image to serve as base table
-                self.__table_img_loaded = self.crop_at_pos(self.__table_img_loaded, position.table_pos)
+                self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, position.table_pos)
 
                 # TODO: image extractor controller here
                 user_input = input("gimmme some input biatch\n")
                 if user_input == "":
                     self.__img_count += 1
+                    continue
                 elif user_input == ".":
                     Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
                     print("table img saved")
                     continue
-                if int(user_input) >= 0:
+                elif user_input == "exit":
+                    print("program finished")
+                    break
+                elif int(user_input) >= 0:
                     self.__img_count = int(user_input)
 
             except KeyboardInterrupt:
+                break
+            except ValueError:
                 break
 

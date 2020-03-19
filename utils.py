@@ -33,3 +33,9 @@ class Utils:
     def validate_path(path):
         if not isdir(path):
             os.mkdir(path)
+
+    # crop image at given params
+    @staticmethod
+    def crop_at_pos(img, coordinates):
+        return img[coordinates["y"]:coordinates["y"] + coordinates["h"],
+               coordinates["x"]:coordinates["x"] + coordinates["w"]]
