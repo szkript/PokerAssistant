@@ -1,3 +1,4 @@
+from typing import Dict, List, Any
 from utils import Utils
 import pyautogui
 import os
@@ -7,6 +8,7 @@ from game_components import positions as position
 
 
 class Table:
+    __calculated_positions: List[Dict[Any, Any]]
     # folder paths
     __SCREENSHOT_FOLDER = "desktop_screenshots"
     __DESKTOP_IMAGE_FOLDERS_NUM = 0
@@ -29,6 +31,8 @@ class Table:
     dealer_position = None
 
     def __init__(self, mode):
+        self.__calculated_positions = Utils.calculate_card_positions(position.my_cards_pos,
+                                                                     position.middle_cards_pos) + position.dealer_chip
         # classifier init
         if mode == "live":
             self.__set_folder_path()

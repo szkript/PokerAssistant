@@ -39,3 +39,23 @@ class Utils:
     def crop_at_pos(img, coordinates):
         return img[coordinates["y"]:coordinates["y"] + coordinates["h"],
                coordinates["x"]:coordinates["x"] + coordinates["w"]]
+
+    @staticmethod
+    def calculate_card_positions(pos, pos1):
+        poscalc = []
+        margin = 4
+
+        tmp = pos.copy()
+        for i in range(2):
+            tmp = tmp.copy()
+            if i > 0:
+                tmp["x"] = tmp["x"] + tmp["w"]
+            poscalc.append(tmp)
+
+        tmp = pos1.copy()
+        for x in range(5):
+            tmp = tmp.copy()
+            if x > 0:
+                tmp["x"] += tmp["w"] + margin
+            poscalc.append(tmp)
+        return poscalc
