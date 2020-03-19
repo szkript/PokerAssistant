@@ -91,7 +91,7 @@ class Table:
         selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
         while True:
             try:
-                print(f'image num {self.__img_count}\n')
+                print(f'image num {self.__img_count}')
                 # building file name
                 self.__current_file_name = f'{join(self.__SCREENSHOT_FOLDER, selected_folder)}\\desktop-{self.__img_count}.jpg'
                 # open image by filename and store its content in variable -> __table_img_loaded
@@ -105,7 +105,10 @@ class Table:
                     self.__img_count += 1
                 elif user_input == ".":
                     Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
+                    print("table img saved")
                     continue
+                if int(user_input) >= 0:
+                    self.__img_count = int(user_input)
 
             except KeyboardInterrupt:
                 break
