@@ -8,6 +8,7 @@ from game_components import positions as position
 
 
 class Table:
+    __extracted_objects: List[Any]
     __calculated_positions: List[Dict[Any, Any]]
     # folder paths
     __SCREENSHOT_FOLDER = "desktop_screenshots"
@@ -80,6 +81,7 @@ class Table:
 
     # predict prepared images and set objects in their place
     def __recognize_objects(self, prepared_images):
+        # todo: predict __extracted_objects
         pass
 
     # reads existing images from given folder
@@ -100,15 +102,8 @@ class Table:
                 self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, position.table_pos)
 
                 # TODO: analyze table
-                extracted_objects = []
-                for n, game_obj in enumerate(self.__calculated_positions):
-                    cropped = Utils.crop_at_pos(self.__table_img_loaded, game_obj)
-                    fn = f"gateway/{n}.jpg"
-                    Utils.save_image(cropped, fn)
-                    reloaded_img = Utils.preprocess_image(fn)
-                    extracted_objects.append(reloaded_img)
-
-                self.__recognize_objects(extracted_objects)
+                self.__crop_table_objects()
+                self.__recognize_objects(self.__extracted_objects)
 
                 # TODO: image extractor controller here
                 user_input = input("gimmme some input biatch\n")
@@ -129,3 +124,12 @@ class Table:
                 break
             except ValueError:
                 break
+
+    def __crop_table_objects(self):
+        self.__extracted_objects = []
+        for n, game_obj in enumerate(self.__calculated_positions):
+            cropped = Utils.crop_at_pos(self.__table_img_loaded, game_obj)
+            fn = f"gateway/{n}.jpg"
+            Utils.save_image(cropped, fn)
+            reloaded_img = Utils.preprocess_image(fn)
+            self.__extracted_objects.append(reloaded_img)
