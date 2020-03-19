@@ -5,6 +5,7 @@ import os
 import cv2
 from os.path import join
 from game_components import positions as position
+from recognizer import predict
 
 
 class Table:
@@ -20,7 +21,7 @@ class Table:
     __table_img_loaded = None
 
     # classifier model
-    __classifier = None
+    classifier = None
 
     # for image counting
     __img_count = 0
@@ -32,8 +33,10 @@ class Table:
     dealer_position = None
 
     def __init__(self, mode):
+        self.classifier = predict.Predict()
         self.__calculated_positions = Utils.calculate_card_positions(position.my_cards_pos,
                                                                      position.middle_cards_pos) + position.dealer_chip
+
         # classifier init
         if mode == "live":
             self.__set_folder_path()
@@ -80,9 +83,26 @@ class Table:
         self.__table_img_loaded = cv2.imread(self.__current_file_name)
 
     # predict prepared images and set objects in their place
-    def __recognize_objects(self, prepared_images):
-        # todo: predict __extracted_objects
-        pass
+    def __recognize_objects(self):
+        # example -> self.classifier.predict(self.__extracted_objects[4])
+        table_data = dict()
+        cards_result = []
+        cards = self.__extracted_objects[:7]
+        for in_game_card in cards:
+            cards_result.append(self.classifier.predict(in_game_card))
+
+        dealer_chips = self.__extracted_objects[7:]
+        chips_result = []
+        dealer_position = -1
+        for dealer_position, dealer_chip in enumerate(dealer_chips):
+            res = self.classifier.predict(dealer_chip)
+            chips_result.append(res)
+            if res == "dealer_chip":
+                break
+
+        self.hand = cards_result[:2]
+        self.middle = cards_result[2:]
+        self.dealer_position = dealer_position
 
     # reads existing images from given folder
     def __read_images(self):
@@ -103,7 +123,9 @@ class Table:
 
                 # TODO: analyze table
                 self.__crop_table_objects()
-                self.__recognize_objects(self.__extracted_objects)
+                self.__recognize_objects()
+
+                # TODO: handle predicted input
 
                 # TODO: image extractor controller here
                 user_input = input("gimmme some input biatch\n")
