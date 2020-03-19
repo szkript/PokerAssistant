@@ -1,6 +1,9 @@
+from utils import Utils
 import pyautogui
 import os
+import cv2
 from os.path import join, isdir
+from game_components import positions as position
 
 
 class Table:
@@ -9,6 +12,9 @@ class Table:
     __DESKTOP_IMAGE_FOLDERS_NUM = 0
     __GATHERING_FOLDER = "image_gathering"
     __BASE_PATH = None
+
+    # image related
+    __table_img_loaded = None
 
     # classifier model
     __classifier = None
@@ -23,12 +29,16 @@ class Table:
     dealer_position = None
 
     def __init__(self, mode):
+        # classifier init
         if mode == "live":
             self.__set_folder_path()
         elif mode == "extract":
-            self.__DESKTOP_IMAGE_FOLDERS_NUM = self.__get_directories(self.__SCREENSHOT_FOLDER).__len__()-1
-        # create and set next folder for observe images
-        # classifier init
+            Utils.validate_path(self.__GATHERING_FOLDER)
+            self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1
+
+    # experimental
+    def extractor(self):
+        self.__read_images()
 
     # returns count of images
     def get_img_count(self):
@@ -50,7 +60,7 @@ class Table:
         actual_path = join(os.getcwd(), self.__SCREENSHOT_FOLDER)
         if not isdir(actual_path):
             os.makedirs(actual_path)
-        directories = self.__get_directories(actual_path)
+        directories = Utils.get_directories(actual_path)
         try:
             next_folder = str(int(directories[-1][-1]) + 1)
         except ValueError:
@@ -63,14 +73,40 @@ class Table:
 
         self.__BASE_PATH = directory
 
-    def extractor(self):
-        self.__read_images()
+    def __load_image_to_memory(self):
+        self.__table_img_loaded = cv2.imread(self.__current_file_name)
+
+    # crop image at given params
+    @staticmethod
+    def crop_at_pos(img, coordinates):
+        return img[coordinates["y"]:coordinates["y"] + coordinates["h"],
+               coordinates["x"]:coordinates["x"] + coordinates["w"]]
 
     # reads existing images from given folder
     def __read_images(self):
-        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM}:")
+        if self.__DESKTOP_IMAGE_FOLDERS_NUM < 0:
+            print("no data to examine, gather some and come back later")
+            return
 
-    # return directories in given directory
-    @staticmethod
-    def __get_directories(path):
-        return [x[0] for x in os.walk(path)]
+        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
+        while True:
+            try:
+                print(f'image num {self.__img_count}\n')
+                # building file name
+                self.__current_file_name = f'{join(self.__SCREENSHOT_FOLDER, selected_folder)}\\desktop-{self.__img_count}.jpg'
+                # open image by filename and store its content in variable -> __table_img_loaded
+                self.__load_image_to_memory()
+                # crop table from __table_img_loaded and update with cropped image to serve as base table
+                self.__table_img_loaded = self.crop_at_pos(self.__table_img_loaded, position.table_pos)
+
+                # TODO: image extractor controller here
+                user_input = input("gimmme some input biatch\n")
+                if user_input == "":
+                    self.__img_count += 1
+                elif user_input == ".":
+                    Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
+                    continue
+
+            except KeyboardInterrupt:
+                break
+
