@@ -11,11 +11,13 @@ class Predict:
     __training_set = None
     __CONFIDENCE = 0.9
 
+    # load model, compile, and fill a dict of available classes
     def __init__(self):
         self.__load_my_model()
         self.classifier.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         self.__prediction_classes()
 
+    # return predicted class
     def predict(self, image):
         result = self.classifier.predict(image)
         prediction = "nothing"
@@ -25,12 +27,14 @@ class Predict:
                 break
         return prediction
 
+    # talks for itself but its for loading trained model and summarize it
     def __load_my_model(self):
         # load model
         self.classifier = load_model(self.__MODEL_NAME)
         # summarize model.
         self.classifier.summary()
 
+    # gathering trained class names
     def __prediction_classes(self):
         train_datagen = ImageDataGenerator(rescale=1. / 255,
                                            shear_range=0.2,
@@ -44,6 +48,7 @@ class Predict:
 
         self.classes = self.__training_set.class_indices
 
+    # returns the predicted class name
     def __get_class(self, index):
         for key, value in self.__training_set.class_indices.items():
             if value == index:

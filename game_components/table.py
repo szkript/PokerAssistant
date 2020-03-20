@@ -9,6 +9,11 @@ from recognizer import predict
 
 
 class Table:
+    # built up objects from prediction
+    hand = None
+    middle = None
+    dealer_position = None
+
     __extracted_objects: List[Any]
     __calculated_positions: List[Dict[Any, Any]]
     # folder paths
@@ -26,11 +31,6 @@ class Table:
     # for image counting
     __img_count = 0
     __current_file_name = None
-
-    # built up objects from prediction
-    hand = None
-    middle = None
-    dealer_position = None
 
     def __init__(self, mode):
         self.classifier = predict.Predict()
@@ -85,7 +85,6 @@ class Table:
     # predict prepared images and set objects in their place
     def __recognize_objects(self):
         # example -> self.classifier.predict(self.__extracted_objects[4])
-        table_data = dict()
         cards_result = []
         cards = self.__extracted_objects[:7]
         for in_game_card in cards:
@@ -147,6 +146,7 @@ class Table:
             except ValueError:
                 break
 
+    # crop desired objects from table img then reload them into an np array with shape of 1,3,64,64 for prediction
     def __crop_table_objects(self):
         self.__extracted_objects = []
         for n, game_obj in enumerate(self.__calculated_positions):
