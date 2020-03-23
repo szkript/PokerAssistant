@@ -127,7 +127,7 @@ class Table:
                 # TODO: handle predicted input
 
                 # TODO: image extractor controller here
-                user_input = input("gimmme some input biatch\n")
+                user_input = self.__menu()
                 if user_input == "":
                     self.__img_count += 1
                     continue
@@ -155,3 +155,13 @@ class Table:
             Utils.save_image(cropped, fn)
             reloaded_img = Utils.preprocess_image(fn)
             self.__extracted_objects.append(reloaded_img)
+
+    @staticmethod
+    def __menu():
+        menu_text = """
+blank -> next, #num -> change folder
+num -> img index,
+-cardnum -> save card from img card[i], ctrl+c / e -> exit \n
+"""
+        user_input = input(menu_text)
+        return user_input
