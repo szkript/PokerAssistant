@@ -44,6 +44,24 @@ class Table:
             Utils.validate_path(self.__GATHERING_FOLDER)
             self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1
 
+    # TODO: get all object
+    def get_all(self, test_mode=None):
+        if test_mode is None:
+            self.__take_screenshot()
+        else:
+            self.__current_file_name = f'desktop_screenshots\\0\\desktop-{self.__img_count}.jpg'
+            self.__img_count += 1
+
+        # open image by filename and store its content in variable -> __table_img_loaded
+        self.__load_image_to_memory()
+        # crop table from __table_img_loaded and update with cropped image to serve as base table
+        self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, position.table_pos)
+        self.__crop_table_objects()
+        self.__recognize_objects()
+        self.__display("all")
+        table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position)
+        return table_objects
+
     # experimental
     def extractor(self):
         self.__read_images()
@@ -54,7 +72,7 @@ class Table:
 
     # for testing
     def analyze(self):
-        self.__take_screenshot()
+        table = self.get_all()
 
     # take and save screenshot, sets file path in __current_file_name
     def __take_screenshot(self):
@@ -116,17 +134,7 @@ class Table:
                 print(f'image num {self.__img_count}')
                 # building file name
                 self.__current_file_name = f'{join(self.__SCREENSHOT_FOLDER, selected_folder)}\\desktop-{str(self.__img_count)}.jpg'
-                # open image by filename and store its content in variable -> __table_img_loaded
-                self.__load_image_to_memory()
-                # crop table from __table_img_loaded and update with cropped image to serve as base table
-                self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, position.table_pos)
-
-                # TODO: analyze table
-                self.__crop_table_objects()
-                self.__recognize_objects()
-
-                # TODO: handle predicted input
-                self.__display("all")
+                table = self.get_all()
                 # TODO: image extractor controller here
                 user_input = self.__menu()
                 if user_input == "":
@@ -157,9 +165,14 @@ class Table:
             reloaded_img = Utils.preprocess_image(fn)
             self.__extracted_objects.append(reloaded_img)
 
-    # TODO: get all object
-
     # TODO: get hand if not none
+    def get_hand(self):
+        if self.__hand is None:
+            # TODO: create new pic, predict and set hand cards
+            self.__take_screenshot()
+            pass
+        return self.__hand
+
     # TODO: get middle if not none
     # TODO: get position if not none
 
@@ -177,7 +190,7 @@ num -> img index
     def __display(self, param):
         if param is "all":
             print(f"""
-hand: {self.__hand} my position: {self.__dealer_position}
+hand: {self.__hand} dealer position: {self.__dealer_position}
 middle: {self.__middle}
 """)
         elif param is "hand":
@@ -186,4 +199,3 @@ middle: {self.__middle}
             print(f"middle: {self.__middle}")
         elif param is "position":
             print(f"position: {self.__dealer_position}")
-
