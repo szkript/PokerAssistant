@@ -10,9 +10,9 @@ from recognizer import predict
 
 class Table:
     # built up objects from prediction
-    hand = None
-    middle = None
-    dealer_position = None
+    __hand = None
+    __middle = None
+    __dealer_position = None
 
     __extracted_objects: List[Any]
     __calculated_positions: List[Dict[Any, Any]]
@@ -99,9 +99,9 @@ class Table:
             if res == "dealer_chip":
                 break
 
-        self.hand = cards_result[:2]
-        self.middle = cards_result[2:]
-        self.dealer_position = dealer_position
+        self.__hand = cards_result[:2]
+        self.__middle = cards_result[2:]
+        self.__dealer_position = dealer_position
 
     # reads existing images from given folder
     def __read_images(self):
@@ -109,7 +109,8 @@ class Table:
             print("no data to examine, gather some and come back later")
             return
 
-        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
+        # selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
+        selected_folder = str(0)
         while True:
             try:
                 print(f'image num {self.__img_count}')
@@ -125,7 +126,7 @@ class Table:
                 self.__recognize_objects()
 
                 # TODO: handle predicted input
-
+                self.__display("all")
                 # TODO: image extractor controller here
                 user_input = self.__menu()
                 if user_input == "":
@@ -156,12 +157,33 @@ class Table:
             reloaded_img = Utils.preprocess_image(fn)
             self.__extracted_objects.append(reloaded_img)
 
+    # TODO: get all object
+
+    # TODO: get hand if not none
+    # TODO: get middle if not none
+    # TODO: get position if not none
+
     @staticmethod
     def __menu():
         menu_text = """
-blank -> next, #num -> change folder
-num -> img index,
+blank -> next
+#num -> change folder
+num -> img index
 -cardnum -> save card from img card[i], ctrl+c / e -> exit \n
 """
         user_input = input(menu_text)
         return user_input
+
+    def __display(self, param):
+        if param is "all":
+            print(f"""
+hand: {self.__hand} my position: {self.__dealer_position}
+middle: {self.__middle}
+""")
+        elif param is "hand":
+            print(f"hand: {self.__hand}")
+        elif param is "middle":
+            print(f"middle: {self.__middle}")
+        elif param is "position":
+            print(f"position: {self.__dealer_position}")
+
