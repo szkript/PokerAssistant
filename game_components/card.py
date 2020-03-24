@@ -4,7 +4,7 @@ class Card:
     value = None
 
     def __init__(self, name):
-        if name == "trash":
+        if name == "trash" or name == "background" or name == "nothing":
             return
         self.__original_name = name
         self.set_fields(name)

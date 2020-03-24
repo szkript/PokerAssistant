@@ -21,20 +21,24 @@ class Assistant:
             game = GameAnalyzer(number_of_players=3)
             while True:
                 self.__cards.clear()
-                table = self.__table.get_all(test_mode=True)
+                try:
+                    table = self.__table.get_all(test_mode=True)
+                except TypeError:
+                    print("end of images")
+                    break
                 recognized_cards = table["hand"] + table["middle"]
                 for card in recognized_cards:
                     prepared_card = Card(card)
                     self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
                 # TODO: determine phase
-                if self.__cards[0] is None and self.__cards[1] is None:
+                if self.__cards[0] is None and self.__cards[1] is None:  # hand
                     continue
-                elif self.__cards[2] is not None:
+                elif self.__cards[2] is not None:  # middle #1 card
                     continue
                 # calculate pre flop chances
                 move = game.calculate_staring_chance(self.__cards, table["dealer_position"])
-
+                print(move)
                 # testing limit
                 if self.__LIMIT and self.__loop_limiter():
                     break
