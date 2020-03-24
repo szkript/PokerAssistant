@@ -58,8 +58,8 @@ class GameAnalyzer:
                     var_index = 0
 
                 values -= 1
-                card_val = cards[var_index]
                 if var_index is not None:
+                    card_val = cards[var_index].value
                     if values == 14:  # ace
                         if card_val >= 10:
                             return "playable"
@@ -134,9 +134,51 @@ class GameAnalyzer:
                         if card_val == 4:
                             if my_position == "dealer":  # late only
                                 return "playable"
+                    # non suit
+                    if cards[0].suit != cards[1].suit:
+                        if values == 14:  # ace
+                            if card_val >= 10:
+                                return "playable"
+                            elif 9 >= card_val >= 7:
+                                if my_position == "dealer":  # middle or late
+                                    return "playable"
 
-        elif cards[0].suit != cards[1].suit:
-            pass
+                        elif values == 13:  # king
+                            if card_val >= 11:
+                                return "playable"
+                            elif 10 == card_val:
+                                if my_position == "dealer":  # middle or late only
+                                    return "playable"
+                            elif 9 == card_val:
+                                if my_position == "dealer":  # late only
+                                    return "playable"
+
+                        elif values == 12:  # queen
+                            if 11 >= card_val >= 9:
+                                if my_position == "dealer":  # middle or late
+                                    return "playable"
+
+                        elif values == 11:  # jumbo
+                            if card_val >= 10:
+                                return "playable"
+                            elif 8 >= card_val >= 7:
+                                if my_position == "dealer":  # middle or late
+                                    return "playable"
+
+                        elif values == 10:
+                            if 9 >= card_val >= 8:
+                                if my_position == "dealer":  # mid or late
+                                    return "playable"
+
+                        elif values == 9:
+                            if 8 >= card_val >= 7:
+                                if my_position == "dealer":  # late only
+                                    return "playable"
+
+                        elif values == 8:
+                            if card_val == 7:
+                                if my_position == "dealer":  # late only
+                                    return "playable"
 
         else:
             return "unplayable"
