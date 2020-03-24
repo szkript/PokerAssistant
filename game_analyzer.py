@@ -1,20 +1,24 @@
 class GameAnalyzer:
     __num_of_players = None
     __chances = None
-    __pre_flop_chart = dict()
 
     def __init__(self, number_of_players):
         self.__num_of_players = number_of_players
-        self.__init_pre_flop_chart()
 
     def calculate_staring_chance(self, cards, dealer_pos):
         my_position = self.determine_position(dealer_pos)
-
-        pass
-
-    def __init_pre_flop_chart(self):
-        for index, value in enumerate(range(2, 15)):
-            print(index+2, value)
+        if cards[0].value == cards[1].value:
+            pair_value = cards[0].value
+            print("pair")
+            if pair_value >= 7:
+                return "playable"
+            elif 6 >= pair_value >= 5:
+                if my_position == "dealer":
+                    return "playable"
+            elif pair_value <= 4:
+                if my_position == "dealer":
+                    return "playable"
+        return "fold"
 
     def determine_position(self, dealer_position):
         position = None
@@ -30,9 +34,3 @@ class GameAnalyzer:
             pass
 
         return position
-        position = "mid"
-        position = "late"
-        position = "early"
-        position = "small blind"
-        position = "big blind"
-        position = "dealer"

@@ -39,17 +39,19 @@ class Table:
 
         # classifier init
         if mode == "live":
-            self.__set_folder_path()
+            # self.__set_folder_path()
+            pass
         elif mode == "extract":
             Utils.validate_path(self.__GATHERING_FOLDER)
             self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1
 
     # TODO: get all object
     def get_all(self, test_mode=None):
+        print(self.__img_count)
         if test_mode is None:
             self.__take_screenshot()
         else:
-            self.__current_file_name = f'desktop_screenshots\\0\\desktop-{self.__img_count}.jpg'
+            self.__current_file_name = f'desktop_screenshots\\5\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
 
         # open image by filename and store its content in variable -> __table_img_loaded

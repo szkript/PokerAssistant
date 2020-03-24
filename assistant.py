@@ -18,7 +18,7 @@ class Assistant:
     def start(self):
         # live
         if self.__program_mode == self.__mode[0]:
-            game = GameAnalyzer(3)
+            game = GameAnalyzer(number_of_players=3)
             while True:
                 self.__cards.clear()
                 table = self.__table.get_all(test_mode=True)
@@ -28,8 +28,12 @@ class Assistant:
                     self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
                 # TODO: determine phase
+                if self.__cards[0] is None and self.__cards[1] is None:
+                    continue
+                elif self.__cards[2] is not None:
+                    continue
                 # calculate pre flop chances
-                game.calculate_staring_chance(self.__cards, table["dealer_position"])
+                move = game.calculate_staring_chance(self.__cards, table["dealer_position"])
 
                 # testing limit
                 if self.__LIMIT and self.__loop_limiter():
