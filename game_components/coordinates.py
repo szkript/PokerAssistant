@@ -1,4 +1,4 @@
-players = 3
+players = 9
 
 card_width = 76
 card_width_resized = 37
