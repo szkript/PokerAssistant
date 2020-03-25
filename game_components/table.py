@@ -6,6 +6,7 @@ import cv2
 from os.path import join
 from game_components import coordinates as coordinate
 from recognizer import predict
+from assistant_run_mode import AssistantRunMode
 
 
 class Table:
@@ -38,10 +39,10 @@ class Table:
                                                                      coordinate.middle_cards_pos) + coordinate.dealer_chip
 
         # classifier init
-        if mode == "live":
+        if mode == AssistantRunMode.LIVE:
             # self.__set_folder_path()
             pass
-        elif mode == "extract":
+        elif mode == AssistantRunMode.EXTRACT:
             Utils.validate_path(self.__GATHERING_FOLDER)
             self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1
 

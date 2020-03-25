@@ -1,3 +1,6 @@
+from game_components.Enums.color import Color
+
+
 class Card:
     __original_name = None
     suit = None
@@ -11,7 +14,8 @@ class Card:
 
     def set_fields(self, name):
         separator = str(name).index("_")
-        self.suit = name[:separator]
+        suit = name[:separator]
+        self.suit = Color.assign(suit)
         value = name[separator + 1:]
         if value == 'j':
             self.value = 11
@@ -23,4 +27,6 @@ class Card:
             self.value = 14
         else:
             self.value = int(value)
+
+
 
