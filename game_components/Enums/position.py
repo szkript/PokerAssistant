@@ -18,3 +18,6 @@ class Position(Enum):
             return self.MIDDLE
         elif self.MIDDLE < dealer_position <= self.LATE:
             return self.LATE
+
+    def __str__(self):
+        return self.name

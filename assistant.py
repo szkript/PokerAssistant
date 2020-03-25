@@ -54,9 +54,15 @@ class Assistant:
         return False
 
     def __display_table(self, dealer_position, game_analyzer):
+        # middle_cards_txt = self.__cards[2:7]
+        mid_txt = []
+        for midcard in self.__cards[2:7]:
+            if midcard is None:
+                break
+            mid_txt.append(midcard.display_name)
         print(f"""
-hand: {self.__cards[0]}, {self.__cards[1]} || {game_analyzer.determine_position(dealer_position)}
-middle : {self.__cards[2:7]}
+hand: {self.__cards[0]}, {self.__cards[1]} || my position: {game_analyzer.determine_position(dealer_position)}
+middle : {", ".join(mid_txt)}
 """)
 
 

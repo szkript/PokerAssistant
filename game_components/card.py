@@ -5,6 +5,7 @@ class Card:
     __original_name = None
     suit = None
     value = None
+    display_name = None
 
     def __init__(self, name):
         if name == "trash" or name == "background" or name == "nothing":
@@ -28,5 +29,7 @@ class Card:
         else:
             self.value = int(value)
 
+        self.display_name = f"{self.suit}|{self.value}"
+
     def __str__(self):
-        return f"{self.suit} {self.value}"
+        return f"{self.display_name}"
