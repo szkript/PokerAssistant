@@ -12,7 +12,10 @@ class GameAnalyzer:
         result.append(self.__pair_validator(cards, my_position))
         result.append(self.__suit_validator(cards, my_position))
 
-        return result
+        for res in result:
+            if res is not None:
+                return res
+        return "fold"
 
     # give back my position determined by seat and dealer_chip
     def determine_position(self, dealer_position):
@@ -43,7 +46,6 @@ class GameAnalyzer:
             elif pair_value <= 4:
                 if my_position == "dealer":
                     return "playable"
-        return "fold"
 
     @staticmethod
     def __suit_validator(cards, my_position):
@@ -180,5 +182,4 @@ class GameAnalyzer:
                                 if my_position == "dealer":  # late only
                                     return "playable"
 
-        else:
-            return "unplayable"
+

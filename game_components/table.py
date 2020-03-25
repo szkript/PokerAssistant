@@ -4,7 +4,7 @@ import pyautogui
 import os
 import cv2
 from os.path import join
-from game_components import positions as position
+from game_components import coordinates as coordinate
 from recognizer import predict
 
 
@@ -34,8 +34,8 @@ class Table:
 
     def __init__(self, mode):
         self.classifier = predict.Predict()
-        self.__calculated_positions = Utils.calculate_card_positions(position.my_cards_pos,
-                                                                     position.middle_cards_pos) + position.dealer_chip
+        self.__calculated_positions = Utils.calculate_card_positions(coordinate.my_cards_pos,
+                                                                     coordinate.middle_cards_pos) + coordinate.dealer_chip
 
         # classifier init
         if mode == "live":
@@ -57,7 +57,7 @@ class Table:
         # open image by filename and store its content in variable -> __table_img_loaded
         self.__load_image_to_memory()
         # crop table from __table_img_loaded and update with cropped image to serve as base table
-        self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, position.table_pos)
+        self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, coordinate.table_pos)
         self.__crop_table_objects()
         self.__recognize_objects()
         self.__display("all")
