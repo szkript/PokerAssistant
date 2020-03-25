@@ -18,7 +18,7 @@ class Assistant:
     def start(self):
         # live
         if self.__program_mode == Run_mode.LIVE:
-            game = GameAnalyzer(number_of_players=3)
+            game = GameAnalyzer(number_of_players=9)
             while True:
                 self.__cards.clear()
                 try:
@@ -31,6 +31,8 @@ class Assistant:
                     prepared_card = Card(card)
                     self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
+                # new display
+                self.__display_table(table["dealer_position"], game)
                 # TODO: determine phase
                 if self.__cards[0] is None and self.__cards[1] is None:  # hand
                     continue
@@ -50,6 +52,12 @@ class Assistant:
         if self.__table.get_img_count() > 10:
             return True
         return False
+
+    def __display_table(self, dealer_position, game_analyzer):
+        print(f"""
+hand: {self.__cards[0]}, {self.__cards[1]} || {game_analyzer.determine_position(dealer_position)}
+middle : {self.__cards[2:7]}
+""")
 
 
 if __name__ == '__main__':

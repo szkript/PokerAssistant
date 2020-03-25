@@ -17,3 +17,6 @@ class Color(Enum):
             return Color.CLUB
         elif suit == "diamond":
             return Color.DIAMOND
+
+    def __str__(self):
+        return self.name

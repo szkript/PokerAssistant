@@ -28,5 +28,5 @@ class Card:
         else:
             self.value = int(value)
 
-
-
+    def __str__(self):
+        return f"{self.suit} {self.value}"

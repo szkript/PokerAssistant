@@ -52,7 +52,7 @@ class Table:
         if test_mode is None:
             self.__take_screenshot()
         else:
-            self.__current_file_name = f'desktop_screenshots\\5\\desktop-{self.__img_count}.jpg'
+            self.__current_file_name = f'desktop_screenshots\\torna1\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
 
         # open image by filename and store its content in variable -> __table_img_loaded
@@ -61,7 +61,6 @@ class Table:
         self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, coordinate.table_pos)
         self.__crop_table_objects()
         self.__recognize_objects()
-        self.__display("all")
         table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position)
         return table_objects
 
@@ -189,16 +188,3 @@ num -> img index
 """
         user_input = input(menu_text)
         return user_input
-
-    def __display(self, param):
-        if param is "all":
-            print(f"""
-hand: {self.__hand} dealer position: {self.__dealer_position}
-middle: {self.__middle}
-""")
-        elif param is "hand":
-            print(f"hand: {self.__hand}")
-        elif param is "middle":
-            print(f"middle: {self.__middle}")
-        elif param is "position":
-            print(f"position: {self.__dealer_position}")
