@@ -1,3 +1,6 @@
+from game_components.position import Position as pos
+
+
 class GameAnalyzer:
     __num_of_players = None
     __chances = None
@@ -23,13 +26,21 @@ class GameAnalyzer:
         if self.__num_of_players == 3:
             if dealer_position == 0:
                 # best position
-                position = "dealer"  # (late)
+                position = pos.DEALER  # (late)
             elif dealer_position == 1:
-                position = "small blind"  # (early)
+                position = pos.SMALL_BLIND  # (early)
             elif dealer_position == 2:
-                position = "big blind"  # (early)
+                position = pos.BIG_BLIND  # (mid)
         elif self.__num_of_players == 9:
-            pass
+            if dealer_position == 0:
+                # best pos
+                position = pos.DEALER
+            elif 1 <= dealer_position <= 3:
+                position = pos.EARLY
+            elif 4 <= dealer_position <= 6:
+                position = pos.MIDDLE
+            elif 7 <= dealer_position <= 8:
+                position = pos.LATE
 
         return position
 
@@ -41,10 +52,10 @@ class GameAnalyzer:
             if pair_value >= 7:
                 return "playable"
             elif 6 >= pair_value >= 5:
-                if my_position == "dealer":
+                if my_position == pos.DEALER:
                     return "playable"
             elif pair_value <= 4:
-                if my_position == "dealer":
+                if my_position == pos.DEALER:
                     return "playable"
 
     @staticmethod
@@ -66,75 +77,75 @@ class GameAnalyzer:
                         if card_val >= 10:
                             return "playable"
                         elif 9 >= card_val >= 6:
-                            if my_position == "dealer":  # middle or late
+                            if my_position == pos.DEALER:  # middle or late
                                 return "playable"
                         elif 5 >= card_val >= 2:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 13:  # king
                         if card_val >= 10:
                             return "playable"
                         elif 9 == card_val:
-                            if my_position == "dealer":  # middle or late only
+                            if my_position == pos.DEALER:  # middle or late only
                                 return "playable"
                         elif 8 >= card_val >= 2:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 12:  # queen
                         if card_val >= 10:
                             return "playable"
                         elif 9 >= card_val >= 8:
-                            if my_position == "dealer":  # middle or late
+                            if my_position == pos.DEALER:  # middle or late
                                 return "playable"
 
                     elif values == 11:  # jumbo
                         if card_val >= 10:
                             return "playable"
                         elif 8 == card_val:
-                            if my_position == "dealer":  # middle or late
+                            if my_position == pos.DEALER:  # middle or late
                                 return "playable"
                         elif card_val == 7:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 10:
                         if card_val == 9:
                             return "playable"
                         elif card_val == 8:
-                            if my_position == "dealer":  # mid or late
+                            if my_position == pos.DEALER:  # mid or late
                                 return "playable"
                         elif card_val == 7:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 9:
                         if card_val == 8:
-                            if my_position == "dealer":  # mid or late
+                            if my_position == pos.DEALER:  # mid or late
                                 return "playable"
                         elif 7 >= card_val >= 6:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 8:
                         if 8 >= card_val >= 7:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 7:
                         if 6 >= card_val >= 5:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 6:
                         if card_val == 5:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
 
                     elif values == 5:
                         if card_val == 4:
-                            if my_position == "dealer":  # late only
+                            if my_position == pos.DEALER:  # late only
                                 return "playable"
                     # non suit
                     if cards[0].suit != cards[1].suit:
@@ -142,44 +153,42 @@ class GameAnalyzer:
                             if card_val >= 10:
                                 return "playable"
                             elif 9 >= card_val >= 7:
-                                if my_position == "dealer":  # middle or late
+                                if my_position == pos.DEALER:  # middle or late
                                     return "playable"
 
                         elif values == 13:  # king
                             if card_val >= 11:
                                 return "playable"
                             elif 10 == card_val:
-                                if my_position == "dealer":  # middle or late only
+                                if my_position == pos.DEALER:  # middle or late only
                                     return "playable"
                             elif 9 == card_val:
-                                if my_position == "dealer":  # late only
+                                if my_position == pos.DEALER:  # late only
                                     return "playable"
 
                         elif values == 12:  # queen
                             if 11 >= card_val >= 9:
-                                if my_position == "dealer":  # middle or late
+                                if my_position == pos.DEALER:  # middle or late
                                     return "playable"
 
                         elif values == 11:  # jumbo
                             if card_val >= 10:
                                 return "playable"
                             elif 8 >= card_val >= 7:
-                                if my_position == "dealer":  # middle or late
+                                if my_position == pos.DEALER:  # middle or late
                                     return "playable"
 
                         elif values == 10:
                             if 9 >= card_val >= 8:
-                                if my_position == "dealer":  # mid or late
+                                if my_position == pos.DEALER:  # mid or late
                                     return "playable"
 
                         elif values == 9:
                             if 8 >= card_val >= 7:
-                                if my_position == "dealer":  # late only
+                                if my_position == pos.DEALER:  # late only
                                     return "playable"
 
                         elif values == 8:
                             if card_val == 7:
-                                if my_position == "dealer":  # late only
+                                if my_position == pos.DEALER:  # late only
                                     return "playable"
-
-

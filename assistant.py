@@ -1,4 +1,3 @@
-from enum import Enum
 from game_components.table import Table
 from game_components.card import Card
 from game_analyzer import GameAnalyzer
