@@ -2,4 +2,8 @@ from enum import Enum
 
 
 class Suggestion(Enum):
-    pass
+    FOLD = 0
+    CHECK = 1
+    BET = 2
+    RAISE = 3
+    PLAYABLE = 4
