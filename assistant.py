@@ -32,7 +32,7 @@ class Assistant:
                     self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
                 # new display
-                self.__display_table(table["dealer_position"], game)
+                self.__display_info(table["dealer_position"], game)
                 # TODO: determine phase
                 if self.__cards[0] is None and self.__cards[1] is None:  # hand
                     continue
@@ -53,16 +53,18 @@ class Assistant:
             return True
         return False
 
-    def __display_table(self, dealer_position, game_analyzer):
+    def __display_info(self, dealer_position, game_analyzer):
         # middle_cards_txt = self.__cards[2:7]
+        possible_phase = "Not determined"
         mid_txt = []
-        for midcard in self.__cards[2:7]:
+        for possible_phase, midcard in enumerate(self.__cards[2:7]):
             if midcard is None:
                 break
             mid_txt.append(midcard.display_name)
         print(f"""
 hand: {self.__cards[0]}, {self.__cards[1]} || my position: {game_analyzer.determine_position(dealer_position)}
 middle : {", ".join(mid_txt)}
+phase : {possible_phase}
 """)
 
 

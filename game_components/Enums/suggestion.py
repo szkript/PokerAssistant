@@ -7,3 +7,6 @@ class Suggestion(Enum):
     BET = 2
     RAISE = 3
     PLAYABLE = 4
+
+    def __str__(self):
+        return self.name

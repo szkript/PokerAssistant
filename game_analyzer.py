@@ -1,4 +1,5 @@
 from game_components.Enums.position import Position as Pos
+from game_components.Enums.suggestion import Suggestion as Suggest
 
 
 class GameAnalyzer:
@@ -50,13 +51,13 @@ class GameAnalyzer:
             pair_value = cards[0].value
             print("pair")
             if pair_value >= 7:
-                return "playable"
+                return Suggest.PLAYABLE
             elif 6 >= pair_value >= 5:
                 if my_position == Pos.DEALER:
-                    return "playable"
+                    return Suggest.PLAYABLE
             elif pair_value <= 4:
                 if my_position == Pos.DEALER:
-                    return "playable"
+                    return Suggest.PLAYABLE
 
     @staticmethod
     def __suit_validator(cards, my_position):
@@ -75,120 +76,120 @@ class GameAnalyzer:
                     card_val = cards[var_index].value
                     if values == 14:  # ace
                         if card_val >= 10:
-                            return "playable"
+                            return Suggest.PLAYABLE
                         elif 9 >= card_val >= 6:
                             if my_position == Pos.DEALER:  # middle or late
-                                return "playable"
+                                return Suggest.PLAYABLE
                         elif 5 >= card_val >= 2:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 13:  # king
                         if card_val >= 10:
-                            return "playable"
+                            return Suggest.PLAYABLE
                         elif 9 == card_val:
                             if my_position == Pos.DEALER:  # middle or late only
-                                return "playable"
+                                return Suggest.PLAYABLE
                         elif 8 >= card_val >= 2:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 12:  # queen
                         if card_val >= 10:
-                            return "playable"
+                            return Suggest.PLAYABLE
                         elif 9 >= card_val >= 8:
                             if my_position == Pos.DEALER:  # middle or late
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 11:  # jumbo
                         if card_val >= 10:
-                            return "playable"
+                            return Suggest.PLAYABLE
                         elif 8 == card_val:
                             if my_position == Pos.DEALER:  # middle or late
-                                return "playable"
+                                return Suggest.PLAYABLE
                         elif card_val == 7:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 10:
                         if card_val == 9:
-                            return "playable"
+                            return Suggest.PLAYABLE
                         elif card_val == 8:
                             if my_position == Pos.DEALER:  # mid or late
-                                return "playable"
+                                return Suggest.PLAYABLE
                         elif card_val == 7:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 9:
                         if card_val == 8:
                             if my_position == Pos.DEALER:  # mid or late
-                                return "playable"
+                                return Suggest.PLAYABLE
                         elif 7 >= card_val >= 6:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 8:
                         if 8 >= card_val >= 7:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 7:
                         if 6 >= card_val >= 5:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 6:
                         if card_val == 5:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
 
                     elif values == 5:
                         if card_val == 4:
                             if my_position == Pos.DEALER:  # late only
-                                return "playable"
+                                return Suggest.PLAYABLE
                     # non suit
                     if cards[0].suit != cards[1].suit:
                         if values == 14:  # ace
                             if card_val >= 10:
-                                return "playable"
+                                return Suggest.PLAYABLE
                             elif 9 >= card_val >= 7:
                                 if my_position == Pos.DEALER:  # middle or late
-                                    return "playable"
+                                    return Suggest.PLAYABLE
 
                         elif values == 13:  # king
                             if card_val >= 11:
-                                return "playable"
+                                return Suggest.PLAYABLE
                             elif 10 == card_val:
                                 if my_position == Pos.DEALER:  # middle or late only
-                                    return "playable"
+                                    return Suggest.PLAYABLE
                             elif 9 == card_val:
                                 if my_position == Pos.DEALER:  # late only
-                                    return "playable"
+                                    return Suggest.PLAYABLE
 
                         elif values == 12:  # queen
                             if 11 >= card_val >= 9:
                                 if my_position == Pos.DEALER:  # middle or late
-                                    return "playable"
+                                    return Suggest.PLAYABLE
 
                         elif values == 11:  # jumbo
                             if card_val >= 10:
-                                return "playable"
+                                return Suggest.PLAYABLE
                             elif 8 >= card_val >= 7:
                                 if my_position == Pos.DEALER:  # middle or late
-                                    return "playable"
+                                    return Suggest.PLAYABLE
 
                         elif values == 10:
                             if 9 >= card_val >= 8:
                                 if my_position == Pos.DEALER:  # mid or late
-                                    return "playable"
+                                    return Suggest.PLAYABLE
 
                         elif values == 9:
                             if 8 >= card_val >= 7:
                                 if my_position == Pos.DEALER:  # late only
-                                    return "playable"
+                                    return Suggest.PLAYABLE
 
                         elif values == 8:
                             if card_val == 7:
                                 if my_position == Pos.DEALER:  # late only
-                                    return "playable"
+                                    return Suggest.PLAYABLE
