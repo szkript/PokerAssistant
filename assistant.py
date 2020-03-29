@@ -54,7 +54,6 @@ class Assistant:
         return False
 
     def __display_info(self, dealer_position, game_analyzer):
-        # middle_cards_txt = self.__cards[2:7]
         possible_phase = "Not determined"
         mid_txt = []
         for possible_phase, midcard in enumerate(self.__cards[2:7]):
