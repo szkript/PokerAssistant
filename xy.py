@@ -1,11 +1,13 @@
 import cv2
+import pickle
 
 # initialize the list of reference points and boolean indicating
 # whether cropping is being performed or not
 refPt = []
 cropping = False
-
 imcount = 0
+
+
 def click_and_crop(event, x, y, flags, param):
     # grab references to the global variables
     global refPt, cropping
@@ -27,9 +29,10 @@ def click_and_crop(event, x, y, flags, param):
 
 
 stop_exit = False
+coordinates_from_image = []
 while True:
     # load the image, clone it, and up the mouse callback function
-    impath = "image.jpg"
+    impath = "image_gathering/current_table.jpg"
     image = cv2.imread(impath)
     clone = image.copy()
     cv2.namedWindow("image")
@@ -55,12 +58,26 @@ while True:
     # from the image and display it
     if len(refPt) == 2:
         roi = clone[refPt[0][1]:refPt[1][1], refPt[0][0]:refPt[1][0]]
-        coordinates = f"img: {imcount}  x,y : {refPt[0]}, x2,y2: {refPt[1]}, width: {refPt[1][1] - refPt[0][1]}, height: {refPt[1][0] - refPt[0][0]}"
-        print(coordinates)
-        cv2.imwrite(f"image_gathering/roi{imcount}.jpg", roi)
-        with open(f"image_gathering/roi{imcount}.txt", "w") as coord:
-            coord.write(coordinates)
+        # coordinates = f"img: {imcount}  x,y : {refPt[0]}, x2,y2: {refPt[1]}, width: {refPt[1][1] - refPt[0][1]}, height: {refPt[1][0] - refPt[0][0]}"
+        # print(coordinates)
+        # cv2.imwrite(f"image_gathering/roi{imcount}.jpg", roi)
+        # with open(f"image_gathering/roi{imcount}.txt", "w") as coord:
+        #     coord.write(coordinates)
+        player_data_pos = dict(
+            x=refPt[0][0],
+            y=refPt[0][1],
+            width=refPt[1][1]-refPt[0][1],
+            height=refPt[1][0]-refPt[0][0]
+        )
+        coordinates_from_image.append(player_data_pos)
         imcount += 1
 
     # close all open windows
     cv2.destroyAllWindows()
+
+with open('game_components/player_position.pickle', 'wb') as handle:
+    pickle.dump(coordinates_from_image, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+with open('game_components/player_position.pickle', 'rb') as handle:
+    b = pickle.load(handle)
+print(b)

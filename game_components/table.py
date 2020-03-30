@@ -59,6 +59,7 @@ class Table:
         self.__load_image_to_memory()
         # crop table from __table_img_loaded and update with cropped image to serve as base table
         self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, coordinate.table_pos)
+        Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
         self.__crop_table_objects()
         self.__recognize_objects()
         table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position)
@@ -129,8 +130,8 @@ class Table:
             print("no data to examine, gather some and come back later")
             return
 
-        # selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
-        selected_folder = str(0)
+        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
+        # selected_folder = str(0)
         while True:
             try:
                 print(f'image num {self.__img_count}')

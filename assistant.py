@@ -21,11 +21,7 @@ class Assistant:
             game = GameAnalyzer(number_of_players=9)
             while True:
                 self.__cards.clear()
-                try:
-                    table = self.__table.get_all(test_mode=True)
-                except TypeError:
-                    print("end of images")
-                    break
+                table = self.__table.get_all()
                 recognized_cards = table["hand"] + table["middle"]
                 for card in recognized_cards:
                     prepared_card = Card(card)
@@ -46,7 +42,12 @@ class Assistant:
                     break
         # extract
         elif self.__program_mode == Run_mode.EXTRACT:
-            self.__table.extractor()
+            while True:
+                try:
+                    self.__table.get_all(test_mode=True)
+                except TypeError:
+                    print("end of images")
+                    break
 
     def __loop_limiter(self):
         if self.__table.get_img_count() > 10:
@@ -69,6 +70,6 @@ phase : {possible_phase}
 
 if __name__ == '__main__':
     # mode = input("0 - live \n1 - extract\n")
-    mode = 0
+    mode = 1
     assistant = Assistant(mode)
     assistant.start()
