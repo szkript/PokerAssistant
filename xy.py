@@ -58,11 +58,6 @@ while True:
     # from the image and display it
     if len(refPt) == 2:
         roi = clone[refPt[0][1]:refPt[1][1], refPt[0][0]:refPt[1][0]]
-        # coordinates = f"img: {imcount}  x,y : {refPt[0]}, x2,y2: {refPt[1]}, width: {refPt[1][1] - refPt[0][1]}, height: {refPt[1][0] - refPt[0][0]}"
-        # print(coordinates)
-        # cv2.imwrite(f"image_gathering/roi{imcount}.jpg", roi)
-        # with open(f"image_gathering/roi{imcount}.txt", "w") as coord:
-        #     coord.write(coordinates)
         player_data_pos = dict(
             x=refPt[0][0],
             y=refPt[0][1],
@@ -75,9 +70,10 @@ while True:
     # close all open windows
     cv2.destroyAllWindows()
 
-with open('game_components/player_position.pickle', 'wb') as handle:
+fname = input("filename: ")
+with open(f'game_components/positions/{fname}.pickle', 'wb') as handle:
     pickle.dump(coordinates_from_image, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-with open('game_components/player_position.pickle', 'rb') as handle:
-    b = pickle.load(handle)
-print(b)
+# with open('game_components/player_position.pickle', 'rb') as handle:
+#     b = pickle.load(handle)
+# print(b)
