@@ -32,13 +32,13 @@ class Assistant:
         # extract
         elif self.__program_mode == Run_mode.EXTRACT:
             while True:
-                try:
+                # try:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
-                    self.__handle_data_gathering(test_mode=True)
-                except TypeError:
-                    print("end of images")
-                    break
+                self.__handle_data_gathering(test_mode=True)
+                # except TypeError:
+                #     print("end of images")
+                #     break
 
     # Inner methods
     def __handle_data_gathering(self, test_mode=False):
@@ -54,7 +54,7 @@ class Assistant:
         if _round.phase is not None:
             self.round_history.append(_round)
             # new display
-            self.__display_info(table["dealer_position"], self.__game)
+            # self.__display_info(table["dealer_position"], self.__game)
         # TODO: phase determination
         # TODO: determine move
         # calculate pre flop chances

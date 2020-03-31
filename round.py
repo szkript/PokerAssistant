@@ -25,10 +25,10 @@ class Round:
 
     def __phase_criteriums(self):
         if self.hand[0] is not None and self.hand[1] is not None and self.middle[0] is not None:
-            if len(self.middle == 3):
+            if len(self.middle) == 3:
                 self.phase = Phase.FLOP
-            elif len(self.middle == 4):
+            elif len(self.middle) == 4:
                 self.phase = Phase.TURN
-            elif len(self.middle == 5):
+            elif len(self.middle) == 5:
                 self.phase = Phase.RIVER
 
