@@ -74,6 +74,6 @@ fname = input("filename: ")
 with open(f'game_components/positions/{fname}.pickle', 'wb') as handle:
     pickle.dump(coordinates_from_image, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-# with open('game_components/player_position.pickle', 'rb') as handle:
+# with open('game_components/player9_coordinates.pickle', 'rb') as handle:
 #     b = pickle.load(handle)
 # print(b)
