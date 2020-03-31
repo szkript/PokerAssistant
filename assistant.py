@@ -54,12 +54,17 @@ class Assistant:
         if _round.phase is not None:
             self.round_history.append(_round)
             # new display
-            # self.__display_info(table["dealer_position"], self.__game)
+            self.__display_info(table["dealer_position"], self.__game)
+        else:
+            # return before further calculations begin
+            return
+
         # TODO: phase determination
         # TODO: determine move
         # calculate pre flop chances
-        # move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
-        # print(move)
+        move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
+        print(move)
+        pass
 
     def __loop_limiter(self):
         if self.__table.get_img_count() > 10:
@@ -67,9 +72,10 @@ class Assistant:
         return False
 
     def __display_info(self, dealer_position, game_analyzer):
-        possible_phase = "Not determined"
+        # get current round phase(last added)
+        possible_phase = self.round_history[-1].phase
         mid_txt = []
-        for possible_phase, midcard in enumerate(self.__cards[2:7]):
+        for midcard in self.__cards[2:7]:
             if midcard is None:
                 break
             mid_txt.append(midcard.display_name)

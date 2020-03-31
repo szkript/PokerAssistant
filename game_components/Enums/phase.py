@@ -6,3 +6,6 @@ class Phase(Enum):
     FLOP = 1
     TURN = 2
     RIVER = 3
+
+    def __str__(self):
+        return self.name
