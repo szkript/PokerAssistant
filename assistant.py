@@ -9,16 +9,17 @@ class Assistant:
     __program_mode = None
     __LIMIT = False
     __cards = []
+    __num_of_players = 9
 
     def __init__(self, table_mode):
         self.__program_mode = Run_mode(table_mode)
-        self.__table = Table(self.__program_mode)
+        self.__table = Table(self.__program_mode, self.__num_of_players)
 
     # main loop
     def start(self):
         # live
         if self.__program_mode == Run_mode.LIVE:
-            game = GameAnalyzer(number_of_players=9)
+            game = GameAnalyzer(number_of_players=self.__num_of_players)
             while True:
                 self.__cards.clear()
                 table = self.__table.get_all()
@@ -44,6 +45,8 @@ class Assistant:
         elif self.__program_mode == Run_mode.EXTRACT:
             while True:
                 try:
+                    # with test mode its iterating through a given folder of images and simulate realtime work
+                    # on existing images
                     self.__table.get_all(test_mode=True)
                 except TypeError:
                     print("end of images")

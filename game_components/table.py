@@ -35,8 +35,9 @@ class Table:
 
     __positions = None
 
-    def __init__(self, mode):
-        self.__positions = Positions(num_of_players=6)
+    def __init__(self, mode, num_of_players):
+        # Later should identify automatically the num of players
+        self.__positions = Positions(num_of_players=num_of_players)
         self.classifier = predict.Predict()
         self.__calculated_positions = self.__positions.all_card_pos_calculated + self.__positions.dealer_chip
 
