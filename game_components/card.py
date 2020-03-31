@@ -29,7 +29,7 @@ class Card:
         else:
             self.value = int(value)
 
-        self.display_name = f"{self.suit}|{self.value}"
+        self.display_name = f"{self.suit}|{value}"
 
     def __str__(self):
         return f"{self.display_name}"

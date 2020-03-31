@@ -38,6 +38,7 @@ class Assistant:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
                     self.__handle_data_gathering(test_mode=True)
+                    # TODO: phase determination
                 except TypeError:
                     print("end of images")
                     break
@@ -55,8 +56,8 @@ class Assistant:
         self.__display_info(table["dealer_position"], self.__game)
 
         # calculate pre flop chances
-        move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
-        print(move)
+        # move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
+        # print(move)
 
     def __loop_limiter(self):
         if self.__table.get_img_count() > 10:
