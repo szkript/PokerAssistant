@@ -25,7 +25,6 @@ class Assistant:
         if self.__program_mode == Run_mode.LIVE:
             self.__handle_data_gathering()
             while True:
-                # TODO: determine phase
                 # testing limit
                 if self.__LIMIT and self.__loop_limiter():
                     break
