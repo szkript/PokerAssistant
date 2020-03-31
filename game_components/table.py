@@ -44,8 +44,7 @@ class Table:
 
         # classifier init
         if mode == AssistantRunMode.LIVE:
-            # self.__set_folder_path()
-            pass
+            self.__set_folder_path()
         elif mode == AssistantRunMode.EXTRACT:
             Utils.validate_path(self.__GATHERING_FOLDER)
             self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1

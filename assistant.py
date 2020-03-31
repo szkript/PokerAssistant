@@ -42,7 +42,6 @@ class Assistant:
 
     # Inner methods
     def __handle_data_gathering(self, test_mode=False):
-        # TODO: should build up "round" here?
         self.__cards.clear()
         table = self.__table.get_all(test_mode)
         recognized_cards = table["hand"] + table["middle"]
@@ -51,7 +50,7 @@ class Assistant:
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
         _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"])
-        if _round.phase is not None:
+        if _round.phase is not None or _round != self.round_history[-1]:
             self.round_history.append(_round)
             # new display
             self.__display_info(table["dealer_position"], self.__game)
@@ -59,12 +58,10 @@ class Assistant:
             # return before further calculations begin
             return
 
-        # TODO: phase determination
         # TODO: determine move
         # calculate pre flop chances
         move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
         print(move)
-        pass
 
     def __loop_limiter(self):
         if self.__table.get_img_count() > 10:
