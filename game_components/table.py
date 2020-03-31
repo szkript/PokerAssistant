@@ -113,6 +113,8 @@ class Table:
         cards_result = []
         cards = self.__extracted_objects[:7]
         for in_game_card in cards:
+            if in_game_card is "trash":
+                break
             cards_result.append(self.classifier.predict(in_game_card))
 
         dealer_chips = self.__extracted_objects[7:]

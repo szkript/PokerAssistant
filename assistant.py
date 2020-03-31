@@ -2,6 +2,7 @@ from game_components.table import Table
 from game_components.card import Card
 from game_analyzer import GameAnalyzer
 from assistant_run_mode import AssistantRunMode as Run_mode
+from round import Round
 
 
 class Assistant:
@@ -11,6 +12,7 @@ class Assistant:
     __LIMIT = False
     __cards = []
     __num_of_players = 9
+    round_history = []
 
     def __init__(self, table_mode):
         self.__program_mode = Run_mode(table_mode)
@@ -24,10 +26,6 @@ class Assistant:
             self.__handle_data_gathering()
             while True:
                 # TODO: determine phase
-                if self.__cards[0] is None and self.__cards[1] is None:  # hand
-                    continue
-                elif self.__cards[2] is not None:  # middle #1 card
-                    continue
                 # testing limit
                 if self.__LIMIT and self.__loop_limiter():
                     break
@@ -38,13 +36,13 @@ class Assistant:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
                     self.__handle_data_gathering(test_mode=True)
-                    # TODO: phase determination
                 except TypeError:
                     print("end of images")
                     break
 
     # Inner methods
     def __handle_data_gathering(self, test_mode=False):
+        # TODO: should build up "round" here?
         self.__cards.clear()
         table = self.__table.get_all(test_mode)
         recognized_cards = table["hand"] + table["middle"]
@@ -52,9 +50,13 @@ class Assistant:
             prepared_card = Card(card)
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
-        # new display
-        self.__display_info(table["dealer_position"], self.__game)
-
+        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"])
+        if _round.phase is not None:
+            self.round_history.append(_round)
+            # new display
+            self.__display_info(table["dealer_position"], self.__game)
+        # TODO: phase determination
+        # TODO: determine move
         # calculate pre flop chances
         # move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
         # print(move)
