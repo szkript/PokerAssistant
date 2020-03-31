@@ -37,6 +37,7 @@ class Table:
 
     def __init__(self, mode, num_of_players):
         # Later should identify automatically the num of players
+        self.my_chip_amount = None
         self.__positions = Positions(num_of_players=num_of_players)
         self.classifier = predict.Predict()
         self.__calculated_positions = self.__positions.all_card_pos_calculated + self.__positions.dealer_chip
@@ -52,11 +53,11 @@ class Table:
     # TODO: get all object
     def get_all(self, test_mode=None):
         print(self.__img_count)
-        if test_mode is None:
-            self.__take_screenshot()
-        else:
+        if test_mode:
             self.__current_file_name = f'desktop_screenshots\\9player_torna\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
+        else:
+            self.__take_screenshot()
 
         # open image by filename and store its content in variable -> __table_img_loaded
         self.__load_image_to_memory()
@@ -126,6 +127,7 @@ class Table:
         self.__hand = cards_result[:2]
         self.__middle = cards_result[2:]
         self.__dealer_position = dealer_position
+        # self.my_chip_amount =
 
     # reads existing images from given folder
     def __read_images(self):
