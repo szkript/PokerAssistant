@@ -4,7 +4,7 @@ import pyautogui
 import os
 import cv2
 from os.path import join
-from game_components import coordinates as coordinate
+from game_components.coordinates import Positions
 from recognizer import predict
 from assistant_run_mode import AssistantRunMode
 
@@ -33,15 +33,18 @@ class Table:
     __img_count = 0
     __current_file_name = None
 
-    def __init__(self, mode):
+    __positions = None
+
+    def __init__(self, mode, num_of_players):
+        # Later should identify automatically the num of players
+        self.my_chip_amount = None
+        self.__positions = Positions(num_of_players=num_of_players)
         self.classifier = predict.Predict()
-        self.__calculated_positions = Utils.calculate_card_positions(coordinate.my_cards_pos,
-                                                                     coordinate.middle_cards_pos) + coordinate.dealer_chip
+        self.__calculated_positions = self.__positions.all_card_pos_calculated + self.__positions.dealer_chip
 
         # classifier init
         if mode == AssistantRunMode.LIVE:
-            # self.__set_folder_path()
-            pass
+            self.__set_folder_path()
         elif mode == AssistantRunMode.EXTRACT:
             Utils.validate_path(self.__GATHERING_FOLDER)
             self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1
@@ -49,16 +52,17 @@ class Table:
     # TODO: get all object
     def get_all(self, test_mode=None):
         print(self.__img_count)
-        if test_mode is None:
-            self.__take_screenshot()
-        else:
-            self.__current_file_name = f'desktop_screenshots\\torna1\\desktop-{self.__img_count}.jpg'
+        if test_mode:
+            self.__current_file_name = f'desktop_screenshots\\9player_torna\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
+        else:
+            self.__take_screenshot()
 
         # open image by filename and store its content in variable -> __table_img_loaded
         self.__load_image_to_memory()
         # crop table from __table_img_loaded and update with cropped image to serve as base table
-        self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, coordinate.table_pos)
+        self.__table_img_loaded = Utils.crop_at_pos(self.__table_img_loaded, self.__positions.table_pos)
+        Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
         self.__crop_table_objects()
         self.__recognize_objects()
         table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position)
@@ -108,6 +112,8 @@ class Table:
         cards_result = []
         cards = self.__extracted_objects[:7]
         for in_game_card in cards:
+            if in_game_card is "trash":
+                break
             cards_result.append(self.classifier.predict(in_game_card))
 
         dealer_chips = self.__extracted_objects[7:]
@@ -122,6 +128,7 @@ class Table:
         self.__hand = cards_result[:2]
         self.__middle = cards_result[2:]
         self.__dealer_position = dealer_position
+        # self.my_chip_amount =
 
     # reads existing images from given folder
     def __read_images(self):
@@ -129,8 +136,8 @@ class Table:
             print("no data to examine, gather some and come back later")
             return
 
-        # selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
-        selected_folder = str(0)
+        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
+        # selected_folder = str(0)
         while True:
             try:
                 print(f'image num {self.__img_count}')

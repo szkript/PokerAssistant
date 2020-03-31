@@ -3,6 +3,7 @@ from keras.preprocessing import image
 import os
 import cv2
 import numpy as np
+import pickle
 
 
 class Utils:
@@ -68,3 +69,13 @@ class Utils:
         processing = image.img_to_array(processing)
         processing = np.expand_dims(processing, axis=0)
         return processing
+
+    @staticmethod
+    def load_vars(file_path):
+        with open(file_path + ".pickle", 'rb') as handle:
+            return pickle.load(handle)
+
+    @staticmethod
+    def save_var(file_path, var):
+        with open(file_path + ".pickle", 'wb') as handle:
+            pickle.dump(var, handle, protocol=pickle.HIGHEST_PROTOCOL)

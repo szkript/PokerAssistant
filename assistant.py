@@ -2,51 +2,66 @@ from game_components.table import Table
 from game_components.card import Card
 from game_analyzer import GameAnalyzer
 from assistant_run_mode import AssistantRunMode as Run_mode
+from round import Round
 
 
 class Assistant:
     __table = None
+    __game = None
     __program_mode = None
     __LIMIT = False
     __cards = []
+    __num_of_players = 9
+    round_history = []
 
     def __init__(self, table_mode):
         self.__program_mode = Run_mode(table_mode)
-        self.__table = Table(self.__program_mode)
+        self.__table = Table(self.__program_mode, self.__num_of_players)
+        self.__game = GameAnalyzer(number_of_players=self.__num_of_players)
 
     # main loop
     def start(self):
         # live
         if self.__program_mode == Run_mode.LIVE:
-            game = GameAnalyzer(number_of_players=9)
+            self.__handle_data_gathering()
             while True:
-                self.__cards.clear()
-                try:
-                    table = self.__table.get_all(test_mode=True)
-                except TypeError:
-                    print("end of images")
-                    break
-                recognized_cards = table["hand"] + table["middle"]
-                for card in recognized_cards:
-                    prepared_card = Card(card)
-                    self.__cards.append(prepared_card if prepared_card.value is not None else None)
-
-                # new display
-                self.__display_info(table["dealer_position"], game)
                 # TODO: determine phase
-                if self.__cards[0] is None and self.__cards[1] is None:  # hand
-                    continue
-                elif self.__cards[2] is not None:  # middle #1 card
-                    continue
-                # calculate pre flop chances
-                move = game.calculate_staring_chance(self.__cards, table["dealer_position"])
-                print(move)
                 # testing limit
                 if self.__LIMIT and self.__loop_limiter():
                     break
         # extract
         elif self.__program_mode == Run_mode.EXTRACT:
-            self.__table.extractor()
+            while True:
+                try:
+                    # with test mode its iterating through a given folder of images and simulate realtime work
+                    # on existing images
+                    self.__handle_data_gathering(test_mode=True)
+                except TypeError:
+                    print("end of images")
+                    break
+
+    # Inner methods
+    def __handle_data_gathering(self, test_mode=False):
+        self.__cards.clear()
+        table = self.__table.get_all(test_mode)
+        recognized_cards = table["hand"] + table["middle"]
+        for card in recognized_cards:
+            prepared_card = Card(card)
+            self.__cards.append(prepared_card if prepared_card.value is not None else None)
+
+        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"])
+        if _round.phase is not None or _round != self.round_history[-1]:
+            self.round_history.append(_round)
+            # new display
+            self.__display_info(table["dealer_position"], self.__game)
+        else:
+            # return before further calculations begin
+            return
+
+        # TODO: determine move
+        # calculate pre flop chances
+        move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
+        print(move)
 
     def __loop_limiter(self):
         if self.__table.get_img_count() > 10:
@@ -54,10 +69,10 @@ class Assistant:
         return False
 
     def __display_info(self, dealer_position, game_analyzer):
-        # middle_cards_txt = self.__cards[2:7]
-        possible_phase = "Not determined"
+        # get current round phase(last added)
+        possible_phase = self.round_history[-1].phase
         mid_txt = []
-        for possible_phase, midcard in enumerate(self.__cards[2:7]):
+        for midcard in self.__cards[2:7]:
             if midcard is None:
                 break
             mid_txt.append(midcard.display_name)
@@ -70,6 +85,6 @@ phase : {possible_phase}
 
 if __name__ == '__main__':
     # mode = input("0 - live \n1 - extract\n")
-    mode = 0
+    mode = 1
     assistant = Assistant(mode)
     assistant.start()

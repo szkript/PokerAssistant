@@ -1,159 +1,41 @@
-players = 9
+from utils import Utils
 
-card_width = 76
-card_width_resized = 37
 
-card_height = 106
-card_height_resized = 53
+class Positions:
+    __BASE_PATH = "game_components/positions/"
+    card_width = 76
+    card_width_resized = 37
 
-# absolute position
-table_pos = dict(
-    x=720,
-    y=160,
-    w=1200,
-    h=860,
-    num=1,
-    prefix="table"
-)
+    card_height = 106
+    card_height_resized = 53
 
-# relative pos from cropped table img(unmodified size)
-my_cards_pos = dict(
-    x=519,
-    y=545,
-    w=card_width,
-    h=card_height,
-    num=2,
-    prefix="hand"
-)
-# relative pos from cropped table img(half size)
-my_cards_pos_resized = dict(
-    x=500,
-    y=720,
-    w=card_width_resized,
-    h=card_height_resized,
-    num=2
-)
-# relative pos from cropped table img(unmodified size)
-middle_cards_pos = dict(
-    x=397,
-    y=305,
-    w=card_width,
-    h=card_height,
-    num=5,
-    prefix="middle"
-)
+    # absolute position
+    table_pos = None
+    # relative pos from cropped table img(unmodified size)
+    my_cards_pos = None
+    # relative pos from cropped table img(unmodified size)
+    middle_cards_pos = None
+    dealer_chip = None
+    players_position = None
+    all_card_pos_calculated = None
 
-dchip_w = 50
-dchip_h = 50
-dealer_chip = [dict() for i in range(players)]
-if players == 9:
-    dealer_chip[0] = dict(
-        x=475,
-        y=533,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[1] = dict(
-        x=290,
-        y=435,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[2] = dict(
-        x=218,
-        y=319,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[3] = dict(
-        x=350,
-        y=245,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[4] = dict(
-        x=538,
-        y=193,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[5] = dict(
-        x=771,
-        y=214,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[6] = dict(
-        x=890,
-        y=275,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[7] = dict(
-        x=930,
-        y=433,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[8] = dict(
-        x=792,
-        y=492,
-        w=dchip_w,
-        h=dchip_h
-    )
-elif players == 3:
-    dealer_chip[0] = dict(
-        x=445,
-        y=520,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[1] = dict(
-        x=425,
-        y=213,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[2] = dict(
-        x=929,
-        y=303,
-        w=dchip_w,
-        h=dchip_h
-    )
-elif players == 6:
-    dealer_chip[0] = dict(
-        x=463,
-        y=528,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[1] = dict(
-        x=225,
-        y=400,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[2] = dict(
-        x=357,
-        y=228,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[3] = dict(
-        x=627,
-        y=222,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[4] = dict(
-        x=918,
-        y=290,
-        w=dchip_w,
-        h=dchip_h
-    )
-    dealer_chip[5] = dict(
-        x=858,
-        y=485,
-        w=dchip_w,
-        h=dchip_h
-    )
+    def __init__(self, num_of_players):
+        dealer_chip = [dict() for i in range(num_of_players)]
+        # loading all variable from disk
+        self.__init_vars()
+
+        if num_of_players == 9:
+            dealer_chip = Utils.load_vars(self.__BASE_PATH + "dealer_chip9_coordinates")
+        elif num_of_players == 3:
+            dealer_chip = Utils.load_vars(self.__BASE_PATH + "dealer_chip3_coordinates")
+        elif num_of_players == 6:  # elv jó
+            dealer_chip = Utils.load_vars(self.__BASE_PATH + "dealer_chip6_coordinates")
+        self.dealer_chip = dealer_chip
+
+    # load required coordinates from disk (pickle)
+    def __init_vars(self):
+        self.table_pos = Utils.load_vars(self.__BASE_PATH + "table_coordinates")
+        self.all_card_pos_calculated = Utils.load_vars(self.__BASE_PATH + "all_card_calculated_coordinates")
+        self.players_position = Utils.load_vars(self.__BASE_PATH + "player9_coordinates")
+        self.my_cards_pos = Utils.load_vars(self.__BASE_PATH + "all_hand_calculated_coordinates")
+        self.middle_cards_pos = Utils.load_vars(self.__BASE_PATH + "all_middle_calculated_coordinates")

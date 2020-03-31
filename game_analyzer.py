@@ -37,11 +37,11 @@ class GameAnalyzer:
                 # best pos
                 position = Pos.DEALER
             elif 1 <= dealer_position <= 3:
-                position = Pos.EARLY
-            elif 4 <= dealer_position <= 6:
-                position = Pos.MIDDLE
-            elif 7 <= dealer_position <= 8:
                 position = Pos.LATE
+            elif 4 <= dealer_position <= 5:
+                position = Pos.MIDDLE
+            elif 6 <= dealer_position <= 8:
+                position = Pos.EARLY
 
         return position
 
