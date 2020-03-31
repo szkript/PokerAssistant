@@ -1,5 +1,5 @@
 from game_components.Enums.phase import Phase
-
+from game_components.card import Card
 
 class Round:
     phase = None
@@ -25,10 +25,11 @@ class Round:
 
     def __phase_criteriums(self):
         if self.hand[0] is not None and self.hand[1] is not None and self.middle[0] is not None:
-            if len(self.middle) == 3:
+            middle_count = len(self.middle) - self.middle.count(None)
+            if middle_count == 3:
                 self.phase = Phase.FLOP
-            elif len(self.middle) == 4:
+            elif middle_count == 4:
                 self.phase = Phase.TURN
-            elif len(self.middle) == 5:
+            elif middle_count == 5:
                 self.phase = Phase.RIVER
 

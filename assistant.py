@@ -32,13 +32,13 @@ class Assistant:
         # extract
         elif self.__program_mode == Run_mode.EXTRACT:
             while True:
-                # try:
+                try:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
-                self.__handle_data_gathering(test_mode=True)
-                # except TypeError:
-                #     print("end of images")
-                #     break
+                    self.__handle_data_gathering(test_mode=True)
+                except TypeError:
+                    print("end of images")
+                    break
 
     # Inner methods
     def __handle_data_gathering(self, test_mode=False):
