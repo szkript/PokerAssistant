@@ -46,7 +46,7 @@ class Assistant:
             while True:
                 try:
                     # with test mode its iterating through a given folder of images and simulate realtime work
-                    # on existing images
+                    # on existing imagesí
                     self.__table.get_all(test_mode=True)
                 except TypeError:
                     print("end of images")
