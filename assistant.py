@@ -61,7 +61,7 @@ class Assistant:
             self.round_history.append(_round)
             self.__display_info(table["dealer_position"], self.__game)
 
-    # TODO: determine move
+        # TODO: determine move
         # calculate pre flop chances
         move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
         print(move)
