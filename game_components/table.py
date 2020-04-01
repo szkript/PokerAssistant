@@ -33,6 +33,7 @@ class Table:
     __img_count = 0
     __current_file_name = None
 
+    __folder = None
     __positions = None
 
     def __init__(self, mode, num_of_players):
@@ -53,7 +54,9 @@ class Table:
     def get_all(self, test_mode=None):
         print(self.__img_count)
         if test_mode:
-            self.__current_file_name = f'desktop_screenshots\\9player_torna\\desktop-{self.__img_count}.jpg'
+            if self.__folder is None:
+                self.__folder = input("choose folder: ")
+            self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
         else:
             self.__take_screenshot()

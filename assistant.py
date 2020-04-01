@@ -3,18 +3,20 @@ from game_components.card import Card
 from game_analyzer import GameAnalyzer
 from assistant_run_mode import AssistantRunMode as Run_mode
 from round import Round
+from game_components.Enums.phase import Phase
 
 
 class Assistant:
     __table = None
     __game = None
     __program_mode = None
-    __LIMIT = False
+    __LIMIT = True
     __cards = []
     __num_of_players = 9
     round_history = []
 
     def __init__(self, table_mode):
+        self.__loop_limit_count = 30
         self.__program_mode = Run_mode(table_mode)
         self.__table = Table(self.__program_mode, self.__num_of_players)
         self.__game = GameAnalyzer(number_of_players=self.__num_of_players)
@@ -23,11 +25,9 @@ class Assistant:
     def start(self):
         # live
         if self.__program_mode == Run_mode.LIVE:
-            self.__handle_data_gathering()
             while True:
-                # testing limit
-                if self.__LIMIT and self.__loop_limiter():
-                    break
+                self.__handle_data_gathering()
+
         # extract
         elif self.__program_mode == Run_mode.EXTRACT:
             while True:
@@ -37,6 +37,9 @@ class Assistant:
                     self.__handle_data_gathering(test_mode=True)
                 except TypeError:
                     print("end of images")
+                    break
+                # testing limit
+                if self.__LIMIT and self.__loop_limiter():
                     break
 
     # Inner methods
@@ -63,11 +66,12 @@ class Assistant:
 
         # TODO: determine move
         # calculate pre flop chances
-        move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
-        print(move)
+        if _round.phase is Phase.PRE_FLOP:
+            move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
+            print(move)
 
     def __loop_limiter(self):
-        if self.__table.get_img_count() > 10:
+        if self.__table.get_img_count() > self.__loop_limit_count:
             return True
         return False
 
