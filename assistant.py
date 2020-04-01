@@ -12,7 +12,7 @@ class Assistant:
     __program_mode = None
     __LIMIT = True
     __cards = []
-    __num_of_players = 9
+    __num_of_players = 3
     round_history = []
 
     def __init__(self, table_mode):
@@ -27,6 +27,8 @@ class Assistant:
         if self.__program_mode == Run_mode.LIVE:
             while True:
                 self.__handle_data_gathering()
+                # todo: only save images with changes
+                # input()  # until repeatable screenshot will be ignored
 
         # extract
         elif self.__program_mode == Run_mode.EXTRACT:
@@ -62,8 +64,8 @@ class Assistant:
                 return
         except IndexError:
             self.round_history.append(_round)
-            self.__display_info(table["dealer_position"], self.__game)
 
+        self.__display_info(table["dealer_position"], self.__game)
         # TODO: determine move
         # calculate pre flop chances
         if _round.phase is Phase.PRE_FLOP:
@@ -92,6 +94,6 @@ phase : {possible_phase}
 
 if __name__ == '__main__':
     # mode = input("0 - live \n1 - extract\n")
-    mode = 1
+    mode = 0
     assistant = Assistant(mode)
     assistant.start()

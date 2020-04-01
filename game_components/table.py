@@ -59,6 +59,7 @@ class Table:
             self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
         else:
+            pyautogui.countdown(3)
             self.__take_screenshot()
 
         # open image by filename and store its content in variable -> __table_img_loaded
@@ -79,10 +80,6 @@ class Table:
     def get_img_count(self):
         return self.__img_count
 
-    # for testing
-    def analyze(self):
-        table = self.get_all()
-
     # take and save screenshot, sets file path in __current_file_name
     def __take_screenshot(self):
         screenshot = pyautogui.screenshot()
@@ -96,12 +93,13 @@ class Table:
         Utils.validate_path(actual_path)
         directories = Utils.get_directories(actual_path)
         try:
-            next_folder = str(int(directories[-1][-1]) + 1)
+            next_folder = str(len(directories))
         except ValueError:
             next_folder = str(0)
 
         directory = actual_path + "\\" + next_folder
-        print(f"The current working directory is {directory} \n")
+        display_dir = '/'.join(directory.split('\\')[-2:])
+        print(f"The current working directory is: \n{display_dir} \n")
         Utils.validate_path(directory)
 
         self.__BASE_PATH = directory
