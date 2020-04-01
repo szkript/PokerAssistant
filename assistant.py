@@ -49,15 +49,19 @@ class Assistant:
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
         _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"])
-        if _round.phase is not None or _round != self.round_history[-1]:
+        try:
+            if _round.phase is not None or _round != self.round_history[-1]:
+                self.round_history.append(_round)
+                # new display
+                self.__display_info(table["dealer_position"], self.__game)
+            else:
+                # return before further calculations begin
+                return
+        except IndexError:
             self.round_history.append(_round)
-            # new display
             self.__display_info(table["dealer_position"], self.__game)
-        else:
-            # return before further calculations begin
-            return
 
-        # TODO: determine move
+    # TODO: determine move
         # calculate pre flop chances
         move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
         print(move)
