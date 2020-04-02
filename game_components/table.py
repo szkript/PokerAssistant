@@ -15,7 +15,7 @@ class Table:
     __middle = None
     __dealer_position = None
 
-    __extracted_objects: List[Any]
+    extracted_objects = None
     __calculated_positions: List[Dict[Any, Any]]
     # folder paths
     __SCREENSHOT_FOLDER = "desktop_screenshots"
@@ -111,13 +111,13 @@ class Table:
     def __recognize_objects(self):
         # example -> self.classifier.predict(self.__extracted_objects[4])
         cards_result = []
-        cards = self.__extracted_objects[:7]
+        cards = self.extracted_objects[:7]
         for in_game_card in cards:
             if in_game_card is "trash":
                 break
             cards_result.append(self.classifier.predict(in_game_card))
 
-        dealer_chips = self.__extracted_objects[7:]
+        dealer_chips = self.extracted_objects[7:]
         chips_result = []
         dealer_position = -1
         for dealer_position, dealer_chip in enumerate(dealer_chips):
@@ -167,13 +167,17 @@ class Table:
 
     # crop desired objects from table img then reload them into an np array with shape of 1,3,64,64 for prediction
     def __crop_table_objects(self):
-        self.__extracted_objects = []
+        img_validator = self.extracted_objects
+        self.extracted_objects = []
         for n, game_obj in enumerate(self.__calculated_positions):
             cropped = Utils.crop_at_pos(self.__table_img_loaded, game_obj)
             fn = f"gateway/{n}.jpg"
             Utils.save_image(cropped, fn)
             reloaded_img = Utils.preprocess_image(fn)
-            self.__extracted_objects.append(reloaded_img)
+            self.extracted_objects.append(reloaded_img)
+        # if img_validator is not None:
+        #     if self.extracted_objects[0] == img_validator[0]:
+        #         self.__img_count -= 1
 
     # TODO: get hand if not none
     def get_hand(self):

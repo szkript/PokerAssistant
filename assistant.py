@@ -31,6 +31,7 @@ class Assistant:
                 # input()  # until repeatable screenshot will be ignored
 
         # extract
+        # TODO: create control or extract mode
         elif self.__program_mode == Run_mode.EXTRACT:
             while True:
                 try:
