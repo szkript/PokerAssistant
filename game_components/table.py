@@ -80,8 +80,8 @@ class Table:
         self.__read_images()
 
     # returns count of images
-    def get_img_count(self):
-        return self.__img_count
+    def get_current_img_count(self):
+        return self.__img_count - 1
 
     # returns current file name
     def current_image_filename(self):

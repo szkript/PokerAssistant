@@ -8,7 +8,7 @@ from game_components.Enums.phase import Phase
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.EXTRACT  # test
+    __RUN_MODE = Run_mode.LIVE  # test
 
     __table = None
     __game = None
@@ -63,15 +63,13 @@ class Assistant:
             prepared_card = Card(card)
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
-        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"])
+        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"], self.__table.get_current_img_count())
         history_len = len(self.round_history)
         self.__update_history(_round)
         # if same round skip
         if len(self.round_history) <= history_len:
             return
 
-        # new display
-        self.__display_info()
         # TODO: determine move
         # calculate pre flop chances
         if _round.phase is Phase.PRE_FLOP:
@@ -81,17 +79,19 @@ class Assistant:
     def __update_history(self, _round):
         try:
             if _round.phase is not None or _round != self.round_history[-1]:
+                # a collected well managed display needs with more info
+                # TODO: replace the below one with the above specified
+                # self.__display_info()
                 self.round_history.append(_round)
-            else:
-                # return before further calculations begin
-                if self.__RUN_MODE is not Run_mode.EXTRACT:
+            # return before further calculations begin
+            if self.__RUN_MODE is Run_mode.LIVE:
+                if _round.phase is None:
                     self.__table.drop_image()
-                return
         except IndexError:
             self.round_history.append(_round)
 
     def __loop_limiter(self):
-        if self.__table.get_img_count() > self.__loop_limit_count:
+        if self.__table.get_current_img_count() > self.__loop_limit_count:
             return True
         return False
 
