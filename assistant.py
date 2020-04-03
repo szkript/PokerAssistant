@@ -69,7 +69,7 @@ class Assistant:
             return
 
         # new display
-        self.__display_info(table["my_position"])
+        self.__display_info()
         # TODO: determine move
         # calculate pre flop chances
         if _round.phase is Phase.PRE_FLOP:
@@ -93,16 +93,18 @@ class Assistant:
             return True
         return False
 
-    def __display_info(self, my_position):
-        # get current round phase(last added)
-        possible_phase = self.round_history[-1].phase
+    def __display_info(self):
+        # get current round data(last added)
+        current_round = self.round_history[-1]
+        # get current round phase
+        possible_phase = current_round.phase
         mid_txt = []
         for midcard in self.__cards[2:7]:
             if midcard is None:
                 break
             mid_txt.append(midcard.display_name)
         print(f"""
-hand: {self.__cards[0]}, {self.__cards[1]} || my position: {my_position}
+hand: {self.__cards[0]}, {self.__cards[1]} || my position: {current_round.my_position}
 middle : {", ".join(mid_txt)}
 phase : {possible_phase}
 """)
