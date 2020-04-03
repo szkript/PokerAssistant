@@ -42,6 +42,8 @@ class Assistant:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
                     self.__handle_data_gathering()
+                    self.__image_operations()
+                    # self.__analyze_data()
                 except TypeError as e:
                     print(e)
                     print("end of images")
@@ -108,6 +110,12 @@ hand: {self.__cards[0]}, {self.__cards[1]} || my position: {current_round.my_pos
 middle : {", ".join(mid_txt)}
 phase : {possible_phase}
 """)
+
+    def __image_operations(self):
+        # asking for option
+        self.__table.menu()
+        # if the current image need to be manipulated
+        # self.__table.current_image_filename()
 
 
 if __name__ == '__main__':
