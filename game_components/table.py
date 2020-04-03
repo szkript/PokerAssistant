@@ -51,9 +51,9 @@ class Table:
             self.__DESKTOP_IMAGE_FOLDERS_NUM = Utils.get_directories(self.__SCREENSHOT_FOLDER).__len__() - 1
 
     # TODO: get all object
-    def get_all(self, test_mode=None):
+    def get_all(self, mode):
         print(self.__img_count)
-        if test_mode:
+        if mode is AssistantRunMode.EXTRACT:
             if self.__folder is None:
                 self.__folder = input("choose folder: ")
             self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'

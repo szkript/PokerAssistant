@@ -9,10 +9,11 @@ class Round:
     my_chip_amount = None
     my_position = None
 
-    def __init__(self, hand, middle, dealer_position, my_chip_amount=None):
+    def __init__(self, hand, middle, dealer_position, my_position, my_chip_amount=None):
         self.hand = hand
         self.middle = middle
         self.dealer_position = dealer_position
+        self.my_position = my_position
         self.__determine_phase()
 
     def __determine_phase(self):
@@ -33,4 +34,3 @@ class Round:
                 self.phase = Phase.TURN
             elif middle_count == 5:
                 self.phase = Phase.RIVER
-

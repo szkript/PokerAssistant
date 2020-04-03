@@ -7,6 +7,9 @@ from game_components.Enums.phase import Phase
 
 
 class Assistant:
+    # main switch
+    __RUN_MODE = Run_mode.EXTRACT  # test
+
     __table = None
     __game = None
     __program_mode = None
@@ -15,9 +18,9 @@ class Assistant:
     __num_of_players = 9
     round_history = []
 
-    def __init__(self, table_mode):
+    def __init__(self):
         self.__loop_limit_count = 30
-        self.__program_mode = Run_mode(table_mode)
+        self.__program_mode = Run_mode(self.__RUN_MODE)
         self.__table = Table(self.__program_mode, self.__num_of_players)
         self.__game = GameAnalyzer(number_of_players=self.__num_of_players)
 
@@ -38,8 +41,9 @@ class Assistant:
                 try:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
-                    self.__handle_data_gathering(test_mode=True)
-                except TypeError:
+                    self.__handle_data_gathering()
+                except TypeError as e:
+                    print(e)
                     print("end of images")
                     break
                 # testing limit
@@ -47,42 +51,49 @@ class Assistant:
                     break
 
     # Inner methods
-    def __handle_data_gathering(self, test_mode=False):
+    def __handle_data_gathering(self):
         self.__cards.clear()
         # table contains recognized table data
-        table = self.__table.get_all(test_mode)
+        table = self.__table.get_all(self.__RUN_MODE)
+        table["my_position"] = self.__game.determine_position(table["dealer_position"])
         recognized_cards = table["hand"] + table["middle"]
         for card in recognized_cards:
             prepared_card = Card(card)
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
-        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"])
+        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"])
+        history_len = len(self.round_history)
+        self.__update_history(_round)
+        # if same round skip
+        if len(self.round_history) <= history_len:
+            return
+
+        # new display
+        self.__display_info(table["my_position"])
+        # TODO: determine move
+        # calculate pre flop chances
+        if _round.phase is Phase.PRE_FLOP:
+            move = self.__game.calculate_staring_chance(self.__cards, table["my_position"])
+            print(move)
+
+    def __update_history(self, _round):
         try:
             if _round.phase is not None or _round != self.round_history[-1]:
                 self.round_history.append(_round)
-                # new display
-                self.__display_info(table["dealer_position"], self.__game)
             else:
                 # return before further calculations begin
-                if not test_mode:
+                if self.__RUN_MODE is not Run_mode.EXTRACT:
                     self.__table.drop_image()
                 return
         except IndexError:
             self.round_history.append(_round)
-
-        self.__display_info(table["dealer_position"], self.__game)
-        # TODO: determine move
-        # calculate pre flop chances
-        if _round.phase is Phase.PRE_FLOP:
-            move = self.__game.calculate_staring_chance(self.__cards, table["dealer_position"])
-            print(move)
 
     def __loop_limiter(self):
         if self.__table.get_img_count() > self.__loop_limit_count:
             return True
         return False
 
-    def __display_info(self, dealer_position, game_analyzer):
+    def __display_info(self, my_position):
         # get current round phase(last added)
         possible_phase = self.round_history[-1].phase
         mid_txt = []
@@ -91,14 +102,12 @@ class Assistant:
                 break
             mid_txt.append(midcard.display_name)
         print(f"""
-hand: {self.__cards[0]}, {self.__cards[1]} || my position: {game_analyzer.determine_position(dealer_position)}
+hand: {self.__cards[0]}, {self.__cards[1]} || my position: {my_position}
 middle : {", ".join(mid_txt)}
 phase : {possible_phase}
 """)
 
 
 if __name__ == '__main__':
-    # mode = input("0 - live \n1 - extract\n")
-    mode = 1
-    assistant = Assistant(mode)
+    assistant = Assistant()
     assistant.start()

@@ -9,13 +9,10 @@ class GameAnalyzer:
     def __init__(self, number_of_players):
         self.__num_of_players = number_of_players
 
-    def calculate_staring_chance(self, cards, dealer_pos):
-        result = []
-        my_position = self.determine_position(dealer_pos)
+    def calculate_staring_chance(self, cards, my_position):
+        result = [self.__pair_validator(cards, my_position),
+                  self.__suit_validator(cards, my_position)]
         # pair
-        result.append(self.__pair_validator(cards, my_position))
-        result.append(self.__suit_validator(cards, my_position))
-
         for res in result:
             if res is not None:
                 return res
