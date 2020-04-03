@@ -23,6 +23,7 @@ class Assistant:
         self.__program_mode = Run_mode(self.__RUN_MODE)
         self.__table = Table(self.__program_mode, self.__num_of_players)
         self.__game = GameAnalyzer(number_of_players=self.__num_of_players)
+        print(self.__program_mode)
 
     # main loop
     def start(self):
@@ -32,7 +33,6 @@ class Assistant:
                 self.__handle_data_gathering()
                 # todo: only save images with changes
                 # todo: new images must contain new info
-                # input()  # until repeatable screenshot will be ignored
 
         # extract
         # TODO: create control or extract mode
@@ -81,7 +81,7 @@ class Assistant:
             if _round.phase is not None or _round != self.round_history[-1]:
                 # a collected well managed display needs with more info
                 # TODO: replace the below one with the above specified
-                # self.__display_info()
+                self.__display_info()
                 self.round_history.append(_round)
             # return before further calculations begin
             if self.__RUN_MODE is Run_mode.LIVE:
