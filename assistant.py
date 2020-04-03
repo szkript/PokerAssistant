@@ -76,6 +76,7 @@ class Assistant:
             move = self.__game.calculate_staring_chance(self.__cards, table["my_position"])
             print(move)
 
+    # game history handler
     def __update_history(self, _round):
         try:
             if _round.phase is not None or _round != self.round_history[-1]:
@@ -85,8 +86,9 @@ class Assistant:
                 self.round_history.append(_round)
             # return before further calculations begin
             if self.__RUN_MODE is Run_mode.LIVE:
-                if _round.phase is None:
+                if _round.phase is None or _round.phase.value == self.round_history[-1].phase.value:
                     self.__table.drop_image()
+
         except IndexError:
             self.round_history.append(_round)
 

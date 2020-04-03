@@ -9,6 +9,8 @@ class GameAnalyzer:
     def __init__(self, number_of_players):
         self.__num_of_players = number_of_players
 
+    # todo: calc chances
+
     def calculate_staring_chance(self, cards, my_position):
         result = [self.__pair_validator(cards, my_position),
                   self.__suit_validator(cards, my_position)]
