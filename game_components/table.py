@@ -6,7 +6,7 @@ import cv2
 from os.path import join
 from game_components.coordinates import Positions
 from recognizer import predict
-from assistant_run_mode import AssistantRunMode
+from core.assistant_run_mode import AssistantRunMode
 
 
 class Table:

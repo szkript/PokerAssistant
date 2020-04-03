@@ -10,6 +10,8 @@ class GameAnalyzer:
         self.__num_of_players = number_of_players
 
     # todo: calc chances
+    def analyze(self, _round):
+        pass
 
     def calculate_staring_chance(self, cards, my_position):
         result = [self.__pair_validator(cards, my_position),
@@ -192,3 +194,5 @@ class GameAnalyzer:
                             if card_val == 7:
                                 if my_position == Pos.DEALER:  # late only
                                     return Suggest.PLAYABLE
+
+

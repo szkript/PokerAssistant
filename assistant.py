@@ -1,8 +1,8 @@
 from game_components.table import Table
 from game_components.card import Card
-from game_analyzer import GameAnalyzer
-from assistant_run_mode import AssistantRunMode as Run_mode
-from round import Round
+from core.game_analyzer import GameAnalyzer
+from core.assistant_run_mode import AssistantRunMode as Run_mode
+from game_components.round import Round
 from game_components.Enums.phase import Phase
 
 
@@ -31,6 +31,7 @@ class Assistant:
         if self.__program_mode == Run_mode.LIVE:
             while True:
                 self.__handle_data_gathering()
+                self.__game.analyze(self.round_history[-1])
                 # todo: only save images with changes
                 # todo: new images must contain new info
 
@@ -43,7 +44,7 @@ class Assistant:
                     # on existing images
                     self.__handle_data_gathering()
                     self.__image_operations()
-                    # self.__analyze_data()
+                    # self.__game.analyze(self.round_history[-1])
                 except TypeError as e:
                     print(e)
                     print("end of images")
@@ -63,7 +64,8 @@ class Assistant:
             prepared_card = Card(card)
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
-        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"], self.__table.get_current_img_count())
+        _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"],
+                       self.__table.get_current_img_count())
         history_len = len(self.round_history)
         self.__update_history(_round)
         # if same round skip
@@ -86,7 +88,7 @@ class Assistant:
                 self.round_history.append(_round)
             # return before further calculations begin
             if self.__RUN_MODE is Run_mode.LIVE:
-                if _round.phase is None or _round.phase.value == self.round_history[-1].phase.value:
+                if _round.phase is None:
                     self.__table.drop_image()
 
         except IndexError:

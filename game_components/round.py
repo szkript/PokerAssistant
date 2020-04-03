@@ -9,6 +9,8 @@ class Round:
     my_chip_amount = None
     my_position = None
     image_index = None
+    # players = List[player]
+    # TODO: track preflop bets, if there are anyone who raise the big blind
 
     def __init__(self, hand, middle, dealer_position, my_position, image_index, my_chip_amount=None):
         self.hand = hand
