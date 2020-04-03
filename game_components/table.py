@@ -59,7 +59,7 @@ class Table:
             self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
         else:
-            pyautogui.countdown(3)
+            pyautogui.countdown(3)  # tmp solution
             self.__take_screenshot()
 
         # open image by filename and store its content in variable -> __table_img_loaded
@@ -73,6 +73,9 @@ class Table:
         return table_objects
 
     # experimental
+    def drop_image(self):
+        self.__img_count -= 1
+
     def extractor(self):
         self.__read_images()
 
@@ -167,7 +170,6 @@ class Table:
 
     # crop desired objects from table img then reload them into an np array with shape of 1,3,64,64 for prediction
     def __crop_table_objects(self):
-        img_validator = self.extracted_objects
         self.extracted_objects = []
         for n, game_obj in enumerate(self.__calculated_positions):
             cropped = Utils.crop_at_pos(self.__table_img_loaded, game_obj)
@@ -175,9 +177,6 @@ class Table:
             Utils.save_image(cropped, fn)
             reloaded_img = Utils.preprocess_image(fn)
             self.extracted_objects.append(reloaded_img)
-        # if img_validator is not None:
-        #     if self.extracted_objects[0] == img_validator[0]:
-        #         self.__img_count -= 1
 
     # TODO: get hand if not none
     def get_hand(self):

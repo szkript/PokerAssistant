@@ -10,9 +10,9 @@ class Assistant:
     __table = None
     __game = None
     __program_mode = None
-    __LIMIT = True
+    __LIMIT = False
     __cards = []
-    __num_of_players = 3
+    __num_of_players = 9
     round_history = []
 
     def __init__(self, table_mode):
@@ -28,6 +28,7 @@ class Assistant:
             while True:
                 self.__handle_data_gathering()
                 # todo: only save images with changes
+                # todo: new images must contain new info
                 # input()  # until repeatable screenshot will be ignored
 
         # extract
@@ -48,6 +49,7 @@ class Assistant:
     # Inner methods
     def __handle_data_gathering(self, test_mode=False):
         self.__cards.clear()
+        # table contains recognized table data
         table = self.__table.get_all(test_mode)
         recognized_cards = table["hand"] + table["middle"]
         for card in recognized_cards:
@@ -62,6 +64,8 @@ class Assistant:
                 self.__display_info(table["dealer_position"], self.__game)
             else:
                 # return before further calculations begin
+                if not test_mode:
+                    self.__table.drop_image()
                 return
         except IndexError:
             self.round_history.append(_round)
@@ -95,6 +99,6 @@ phase : {possible_phase}
 
 if __name__ == '__main__':
     # mode = input("0 - live \n1 - extract\n")
-    mode = 0
+    mode = 1
     assistant = Assistant(mode)
     assistant.start()

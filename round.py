@@ -1,5 +1,5 @@
 from game_components.Enums.phase import Phase
-from game_components.card import Card
+
 
 class Round:
     phase = None
@@ -7,6 +7,7 @@ class Round:
     middle = None
     dealer_position = None
     my_chip_amount = None
+    my_position = None
 
     def __init__(self, hand, middle, dealer_position, my_chip_amount=None):
         self.hand = hand
