@@ -56,11 +56,11 @@ class Table:
         print(self.__img_count)
         if mode is AssistantRunMode.EXTRACT:
             if self.__folder is None:
-                self.__folder = "2"  # input("choose folder: ")
+                self.__folder = input("choose folder: ")
             self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
         else:
-            pyautogui.countdown(3)  # tmp solution
+            #pyautogui.countdown(3)  # tmp solution
             self.__take_screenshot()
 
         # open image by filename and store its content in variable -> __table_img_loaded
