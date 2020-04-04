@@ -79,3 +79,15 @@ class Utils:
     def save_var(file_path, var):
         with open(file_path + ".pickle", 'wb') as handle:
             pickle.dump(var, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    @staticmethod
+    # give back number of folders in a folder recursively
+    def number_of_training_folders(folder_path="dataset/training_set"):
+        import os
+        files = folders = 0
+        for _, dirnames, filenames in os.walk(folder_path):
+            # ^ this idiom means "we won't be using this value"
+            files += len(filenames)
+            folders += len(dirnames)
+        print(f"{files} files, {folders} folders")
+        return folders

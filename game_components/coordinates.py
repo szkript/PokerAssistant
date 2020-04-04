@@ -34,4 +34,5 @@ class Positions:
         self.dealer_chip = Utils.load_vars(self.__BASE_PATH + f"dealer_chip{num_of_players}_coordinates")
         self.buttons = [{"x": 598, "y": 780, "w": 190, "h": 75}, {"x": 796, "y": 780, "w": 190, "h": 75},
                         {"x": 990, "y": 780, "w": 190, "h": 75}]
-        pass
+
+    # TODO: coordinate adder

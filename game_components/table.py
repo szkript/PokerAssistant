@@ -41,7 +41,8 @@ class Table:
         self.my_chip_amount = None
         self.__positions = Positions(num_of_players=num_of_players)
         self.classifier = predict.Predict()
-        self.__calculated_positions = self.__positions.all_card_pos_calculated + self.__positions.dealer_chip
+        self.__calculated_positions = \
+            self.__positions.all_card_pos_calculated + self.__positions.dealer_chip + self.__positions.buttons
 
         # classifier init
         if mode == AssistantRunMode.LIVE:
