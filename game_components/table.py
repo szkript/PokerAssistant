@@ -55,7 +55,7 @@ class Table:
         print(self.__img_count)
         if mode is AssistantRunMode.EXTRACT:
             if self.__folder is None:
-                self.__folder = "9player_torna"  # input("choose folder: ")
+                self.__folder = "2"  # input("choose folder: ")
             self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
         else:
@@ -196,11 +196,9 @@ class Table:
     @staticmethod
     def __menu():
         menu_text = """
-blank -> next
-#num -> change folder
-num -> img index
-. -> save current table
--cardnum -> save card from img card[i], ctrl+c / e -> exit \n
+blank -> next, #num -> change folder, num -> img index
+. -> save current table. -cardnum -> save card from img card[i], ctrl+c / e -> exit
+! -> show current table img
 """
         user_input = input(menu_text)
         return user_input
@@ -213,6 +211,10 @@ num -> img index
         elif user_input == ".":
             Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
             print("table img saved")
-            self.__img_count -= 1  # for returning to current image not next
+        elif user_input == "!":
+            Utils.show_image(self.__table_img_loaded)
         elif int(user_input) >= 0:
             self.__img_count = int(user_input)
+            return
+
+        self.__img_count -= 1  # for returning to current image not next

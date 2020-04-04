@@ -11,6 +11,15 @@ class GameAnalyzer:
 
     # todo: calc chances
     def analyze(self, _round):
+        # if no hand then return
+        if _round.hand[0] is None or _round.hand[1] is None:
+            return
+        # TODO: check for pair,drill,poker,full chances
+        # self.__pair_check()
+        # TODO: check for royal poker chances
+        # TODO: check for straight chances
+        # TODO: check for flush chances
+        # TODO: check for straight flush chances
         pass
 
     def calculate_staring_chance(self, cards, my_position):
@@ -46,6 +55,7 @@ class GameAnalyzer:
 
         return position
 
+    # for preflop only
     @staticmethod
     def __pair_validator(cards, my_position):
         if cards[0].value == cards[1].value:

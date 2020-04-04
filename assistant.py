@@ -8,14 +8,15 @@ from game_components.Enums.phase import Phase
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.LIVE  # test
+    __RUN_MODE = Run_mode.EXTRACT  # test
+    __num_of_players = 9
 
     __table = None
     __game = None
     __program_mode = None
     __LIMIT = False
     __cards = []
-    __num_of_players = 9
+
     round_history = []
 
     def __init__(self):
@@ -118,8 +119,6 @@ phase : {possible_phase}
     def __image_operations(self):
         # asking for option
         self.__table.menu()
-        # if the current image need to be manipulated
-        # self.__table.current_image_filename()
 
 
 if __name__ == '__main__':

@@ -18,6 +18,7 @@ class Positions:
     dealer_chip = None
     players_position = None
     all_card_pos_calculated = None
+    buttons = None
 
     def __init__(self, num_of_players):
         # loading all variable from disk
@@ -31,3 +32,6 @@ class Positions:
         self.middle_cards_pos = Utils.load_vars(self.__BASE_PATH + "all_middle_calculated_coordinates")
         # self.players_position = Utils.load_vars(self.__BASE_PATH + f"player{num_of_players}_coordinates")
         self.dealer_chip = Utils.load_vars(self.__BASE_PATH + f"dealer_chip{num_of_players}_coordinates")
+        self.buttons = [{"x": 598, "y": 780, "w": 190, "h": 75}, {"x": 796, "y": 780, "w": 190, "h": 75},
+                        {"x": 990, "y": 780, "w": 190, "h": 75}]
+        pass

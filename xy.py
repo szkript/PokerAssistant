@@ -1,5 +1,6 @@
 import cv2
 import pickle
+from utils import Utils
 
 # initialize the list of reference points and boolean indicating
 # whether cropping is being performed or not
@@ -74,6 +75,7 @@ fname = input("filename: ")
 with open(f'game_components/positions/{fname}.pickle', 'wb') as handle:
     pickle.dump(coordinates_from_image, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+# cv2.imwrite("image_gathering/"+fname, Utils.crop_at_pos())
 # with open('game_components/player9_coordinates.pickle', 'rb') as handle:
 #     b = pickle.load(handle)
 # print(b)
