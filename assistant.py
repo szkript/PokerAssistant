@@ -32,7 +32,7 @@ class Assistant:
         if self.__program_mode == Run_mode.LIVE:
             while True:
                 self.__handle_data_gathering()
-                self.__game.analyze(self.round_history[-1])
+                self.__game.analyze_round()
                 # todo: only save images with changes
                 # todo: new images must contain new info
 
@@ -45,7 +45,6 @@ class Assistant:
                     # on existing images
                     self.__handle_data_gathering()
                     self.__image_operations()
-                    # self.__game.analyze(self.round_history[-1])
                 except TypeError as e:
                     print(e)
                     print("end of images")
@@ -67,6 +66,8 @@ class Assistant:
 
         _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"],
                        self.__table.get_current_img_count())
+
+        # relocate history into game analyzer?
         history_len = len(self.round_history)
         self.__update_history(_round)
         # if same round skip
@@ -87,7 +88,6 @@ class Assistant:
                 # TODO: replace the below one with the above specified
                 self.__game.update_round(_round)
                 self.round_history.append(_round)
-                self.__display_info()
             # return before further calculations begin
             if self.__RUN_MODE is Run_mode.LIVE:
                 if _round.phase is None:
@@ -101,6 +101,7 @@ class Assistant:
             return True
         return False
 
+    # should be displayed in game analyzer
     def __display_info(self):
         # get current round data(last added)
         current_round = self.round_history[-1]

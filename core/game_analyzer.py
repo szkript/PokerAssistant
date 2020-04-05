@@ -6,6 +6,7 @@ class GameAnalyzer:
     __num_of_players = None
     __chances = None
     __current_round = None
+    what_to_do = Suggest.FOLD  # always fold or check if nothing good comes to overwrite it
 
     def __init__(self, number_of_players):
         self.best = None
@@ -15,10 +16,12 @@ class GameAnalyzer:
         self.__current_round = current_round
 
     # todo: calc chances
-    def analyze(self, _round):
+    def analyze_round(self):
         # if no hand then return
-        if _round.hand[0] is None or _round.hand[1] is None:
+        if self.__current_round.hand[0] is None or self.__current_round.hand[1] is None:
             return
+
+        # if any of them comes true just update the self.what_to_do with Suggestion
         # TODO: check for pair,drill,poker,full chances
         # self.__pair_check()
         # TODO: check for royal poker chances
@@ -34,7 +37,7 @@ class GameAnalyzer:
         for res in result:
             if res is not None:
                 return res
-        return "fold"
+        return self.what_to_do
 
     # give back my position determined by seat and dealer_chip
     def determine_position(self, dealer_position):
@@ -65,7 +68,6 @@ class GameAnalyzer:
     def __pair_validator(cards, my_position):
         if cards[0].value == cards[1].value:
             pair_value = cards[0].value
-            print("pair")
             if pair_value >= 7:
                 return Suggest.PLAYABLE
             elif 6 >= pair_value >= 5:
@@ -209,9 +211,3 @@ class GameAnalyzer:
                             if card_val == 7:
                                 if my_position == Pos.DEALER:  # late only
                                     return Suggest.PLAYABLE
-
-    # def __pair_check(self):
-    #     if self.__current_round.hand[0].value == self.__current_round.hand[1].value:
-            # self.best =
-
-
