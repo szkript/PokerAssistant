@@ -5,9 +5,14 @@ from game_components.Enums.suggestion import Suggestion as Suggest
 class GameAnalyzer:
     __num_of_players = None
     __chances = None
+    __current_round = None
 
     def __init__(self, number_of_players):
+        self.best = None
         self.__num_of_players = number_of_players
+
+    def update_round(self, current_round):
+        self.__current_round = current_round
 
     # todo: calc chances
     def analyze(self, _round):
@@ -204,5 +209,9 @@ class GameAnalyzer:
                             if card_val == 7:
                                 if my_position == Pos.DEALER:  # late only
                                     return Suggest.PLAYABLE
+
+    # def __pair_check(self):
+    #     if self.__current_round.hand[0].value == self.__current_round.hand[1].value:
+            # self.best =
 
 

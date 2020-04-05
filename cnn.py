@@ -56,7 +56,7 @@ def continue_training():
         save_model_name="long_classifier.h5"
     )
 
-    classifier = load_model("recognizer/55class/long_classifier.h5")
+    classifier = load_model("long_classifier.h5")
     # Compiling the CNN
     compile_model(classifier)
     training_set, test_set = prepare_dataset()
@@ -129,5 +129,5 @@ def prepare_dataset():
     return training_set, test_set
 
 
-# continue_training()
-new_train()
+continue_training()
+# new_train()

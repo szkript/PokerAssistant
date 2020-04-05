@@ -8,7 +8,7 @@ from game_components.Enums.phase import Phase
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.LIVE  # test
+    __RUN_MODE = Run_mode.EXTRACT  # test
     __num_of_players = 9
 
     __table = None
@@ -85,6 +85,7 @@ class Assistant:
             if _round.phase is not None or _round != self.round_history[-1]:
                 # a collected well managed display needs with more info
                 # TODO: replace the below one with the above specified
+                self.__game.update_round(_round)
                 self.round_history.append(_round)
                 self.__display_info()
             # return before further calculations begin
