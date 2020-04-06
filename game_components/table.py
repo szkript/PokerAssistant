@@ -14,6 +14,7 @@ class Table:
     __hand = None
     __middle = None
     __dealer_position = None
+    __buttons = None
 
     extracted_objects = None
     __calculated_positions: List[Dict[Any, Any]]
@@ -25,7 +26,7 @@ class Table:
 
     # image related
     __table_img_loaded = None
-
+    __num_of_players = None
     # classifier model
     classifier = None
 
@@ -39,6 +40,7 @@ class Table:
     def __init__(self, mode, num_of_players):
         # Later should identify automatically the num of players
         self.my_chip_amount = None
+        self.__num_of_players = num_of_players
         self.__positions = Positions(num_of_players=num_of_players)
         self.classifier = predict.Predict()
         self.__calculated_positions = \
@@ -70,15 +72,12 @@ class Table:
         Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
         self.__crop_table_objects()
         self.__recognize_objects()
-        table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position)
+        table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position, buttons=self.__buttons)
         return table_objects
 
     # experimental
     def drop_image(self):
         self.__img_count -= 1
-
-    def extractor(self):
-        self.__read_images()
 
     # returns count of images
     def get_current_img_count(self):
@@ -125,7 +124,7 @@ class Table:
                 break
             cards_result.append(self.classifier.predict(in_game_card))
 
-        dealer_chips = self.extracted_objects[7:]
+        dealer_chips = self.extracted_objects[7:(7+self.__num_of_players)]
         chips_result = []
         dealer_position = -1
         for dealer_position, dealer_chip in enumerate(dealer_chips):
@@ -134,44 +133,16 @@ class Table:
             if res == "dealer_chip":
                 break
 
+        buttons = self.extracted_objects[(7+self.__num_of_players):]
+        buttons_result = []
+        for button in buttons:
+            buttons_result.append(self.classifier.predict(button))
+
         self.__hand = cards_result[:2]
         self.__middle = cards_result[2:]
         self.__dealer_position = dealer_position
+        self.__buttons = buttons_result
         # self.my_chip_amount =
-
-    # reads existing images from given folder
-    def __read_images(self):
-        if self.__DESKTOP_IMAGE_FOLDERS_NUM < 0:
-            print("no data to examine, gather some and come back later")
-            return
-
-        selected_folder = input(f"choose folder from 0 to {self.__DESKTOP_IMAGE_FOLDERS_NUM - 1}:\n")
-        # selected_folder = str(0)
-        while True:
-            try:
-                print(f'image num {self.__img_count}')
-                # building file name
-                self.__current_file_name = f'{join(self.__SCREENSHOT_FOLDER, selected_folder)}\\desktop-{str(self.__img_count)}.jpg'
-                table = self.get_all()
-                # TODO: image extractor controller here
-                user_input = self.__menu()
-                if user_input == "":
-                    self.__img_count += 1
-                    continue
-                elif user_input == ".":
-                    Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
-                    print("table img saved")
-                    continue
-                elif user_input == "exit":
-                    print("program finished")
-                    break
-                elif int(user_input) >= 0:
-                    self.__img_count = int(user_input)
-
-            except KeyboardInterrupt:
-                break
-            except ValueError:
-                break
 
     # crop desired objects from table img then reload them into an np array with shape of 1,3,64,64 for prediction
     def __crop_table_objects(self):

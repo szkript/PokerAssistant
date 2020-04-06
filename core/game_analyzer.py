@@ -1,5 +1,7 @@
 from game_components.Enums.position import Position as Pos
 from game_components.Enums.suggestion import Suggestion as Suggest
+from core.result_handler import ResultHandler
+from game_components.Enums.phase import Phase
 
 
 class GameAnalyzer:
@@ -17,9 +19,17 @@ class GameAnalyzer:
 
     # todo: calc chances
     def analyze_round(self):
+        self.what_to_do = Suggest.FOLD0  # reset
         # if no hand then return
+        if self.__current_round is None:
+            return
         if self.__current_round.hand[0] is None or self.__current_round.hand[1] is None:
             return
+
+        if self.__current_round.phase == Phase.PRE_FLOP:
+            self.what_to_do = self.calculate_staring_chance()
+            print("suggestion: " + str(self.what_to_do))
+            ResultHandler(self.what_to_do)
 
         # if any of them comes true just update the self.what_to_do with Suggestion
         # TODO: check for pair,drill,poker,full chances
@@ -28,11 +38,10 @@ class GameAnalyzer:
         # TODO: check for straight chances
         # TODO: check for flush chances
         # TODO: check for straight flush chances
-        pass
 
-    def calculate_staring_chance(self, cards, my_position):
-        result = [self.__pair_validator(cards, my_position),
-                  self.__suit_validator(cards, my_position)]
+    def calculate_staring_chance(self):
+        result = [self.__pair_validator(self.__current_round.hand, self.__current_round.my_position),
+                  self.__suit_validator(self.__current_round.hand, self.__current_round.my_position)]
         # pair
         for res in result:
             if res is not None:
@@ -50,6 +59,7 @@ class GameAnalyzer:
                 position = Pos.SMALL_BLIND  # (early)
             elif dealer_position == 2:
                 position = Pos.BIG_BLIND  # (mid)
+
         elif self.__num_of_players == 6:
             if dealer_position == 0:
                 position = Pos.DEALER  # late
@@ -58,9 +68,9 @@ class GameAnalyzer:
             elif dealer_position == 3:
                 position = Pos.EARLY
             elif dealer_position == 4:
-                position = Pos.BIG_BLIND  # early
+                position = Pos.EARLY  # early, bb
             elif dealer_position == 5:
-                position = Pos.SMALL_BLIND  # early
+                position = Pos.EARLY  # early, sb
 
         elif self.__num_of_players == 9:
             if dealer_position == 0:
