@@ -50,6 +50,18 @@ class GameAnalyzer:
                 position = Pos.SMALL_BLIND  # (early)
             elif dealer_position == 2:
                 position = Pos.BIG_BLIND  # (mid)
+        elif self.__num_of_players == 6:
+            if dealer_position == 0:
+                position = Pos.DEALER  # late
+            elif 1 <= dealer_position <= 2:
+                position = Pos.LATE
+            elif dealer_position == 3:
+                position = Pos.EARLY
+            elif dealer_position == 4:
+                position = Pos.BIG_BLIND  # early
+            elif dealer_position == 5:
+                position = Pos.SMALL_BLIND  # early
+
         elif self.__num_of_players == 9:
             if dealer_position == 0:
                 # best pos
