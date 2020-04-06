@@ -4,12 +4,13 @@ from core.game_analyzer import GameAnalyzer
 from core.assistant_run_mode import AssistantRunMode as Run_mode
 from game_components.round import Round
 from game_components.Enums.phase import Phase
+from core.result_handler import ResultHandler
 
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.EXTRACT  # test
-    __num_of_players = 9
+    __RUN_MODE = Run_mode.LIVE  # test
+    __num_of_players = 6
 
     __table = None
     __game = None
@@ -78,6 +79,7 @@ class Assistant:
         # calculate pre flop chances
         if _round.phase is Phase.PRE_FLOP:
             move = self.__game.calculate_staring_chance(self.__cards, table["my_position"])
+            ResultHandler(move)
             print(move)
 
     # game history handler
@@ -88,6 +90,7 @@ class Assistant:
                 # TODO: replace the below one with the above specified
                 self.__game.update_round(_round)
                 self.round_history.append(_round)
+                self.__display_info()
             # return before further calculations begin
             if self.__RUN_MODE is Run_mode.LIVE:
                 if _round.phase is None:
