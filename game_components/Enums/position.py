@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class Position(Enum):
-    DEALER = 0
-    SMALL_BLIND = 1
-    BIG_BLIND = 2
-    EARLY = 3
-    MIDDLE = 4
-    LATE = 5
+    SMALL_BLIND = 0
+    BIG_BLIND = 1
+    EARLY = 2
+    MIDDLE = 3
+    LATE = 4
+    DEALER = 5
 
     # def determine_position(self, dealer_position):
     #     if dealer_position == self.DEALER:
