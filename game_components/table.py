@@ -62,7 +62,7 @@ class Table:
             self.__current_file_name = f'desktop_screenshots\\{self.__folder}\\desktop-{self.__img_count}.jpg'
             self.__img_count += 1
         else:
-            pyautogui.countdown(3)  # tmp solution
+            pyautogui.countdown(2)  # tmp solution
             self.__take_screenshot()
 
         # open image by filename and store its content in variable -> __table_img_loaded
@@ -72,7 +72,8 @@ class Table:
         Utils.save_image(self.__table_img_loaded, self.__GATHERING_FOLDER + "\\current_table.jpg")
         self.__crop_table_objects()
         self.__recognize_objects()
-        table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position, buttons=self.__buttons)
+        table_objects = dict(hand=self.__hand, middle=self.__middle, dealer_position=self.__dealer_position,
+                             buttons=self.__buttons)
         return table_objects
 
     # experimental
@@ -124,7 +125,7 @@ class Table:
                 break
             cards_result.append(self.classifier.predict(in_game_card))
 
-        dealer_chips = self.extracted_objects[7:(7+self.__num_of_players)]
+        dealer_chips = self.extracted_objects[7:(7 + self.__num_of_players)]
         chips_result = []
         dealer_position = -1
         for dealer_position, dealer_chip in enumerate(dealer_chips):
@@ -133,7 +134,7 @@ class Table:
             if res == "dealer_chip":
                 break
 
-        buttons = self.extracted_objects[(7+self.__num_of_players):]
+        buttons = self.extracted_objects[(7 + self.__num_of_players):]
         buttons_result = []
         for button in buttons:
             buttons_result.append(self.classifier.predict(button))

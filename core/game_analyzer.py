@@ -8,13 +8,17 @@ class GameAnalyzer:
     __num_of_players = None
     __chances = None
     __current_round = None
-    what_to_do = Suggest.FOLD  # always fold or check if nothing good comes to overwrite it
+    what_to_do = None  # always fold or check if nothing good comes to overwrite it
 
     def __init__(self, number_of_players):
         self.best = None
         self.__num_of_players = number_of_players
 
     def update_round(self, current_round):
+        if self.__current_round is not None:
+            if self.__current_round == current_round:  # if nothing to update then dont
+                return
+
         self.__current_round = current_round
 
     # todo: calc chances

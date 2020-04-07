@@ -10,16 +10,18 @@ class Round:
     my_position = None
     image_index = None
     # players = List[player]
+    buttons = None
     in_game = None
     # TODO: track preflop bets, if there are anyone who raise the big blind
 
-    def __init__(self, hand, middle, dealer_position, my_position, image_index, my_chip_amount=None):
+    def __init__(self, hand, middle, dealer_position, my_position,buttons, image_index, my_chip_amount=None):
         self.hand = hand
         self.middle = middle
         self.dealer_position = dealer_position
         self.my_position = my_position
         self.__determine_phase()
         self.image_index = image_index
+        self.buttons = buttons
 
     def __determine_phase(self):
         self.__preflop_criteriums()

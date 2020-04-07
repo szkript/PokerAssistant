@@ -64,9 +64,9 @@ class Assistant:
             self.__cards.append(prepared_card if prepared_card.value is not None else None)
 
         _round = Round(self.__cards[:2], self.__cards[2:7], table["dealer_position"], table["my_position"],
-                       self.__table.get_current_img_count())
+                       table["buttons"], self.__table.get_current_img_count())
 
-        # relocate history into game analyzer?
+        # process gathered recognized data
         self.__update_history(_round)
 
     # game history handler
@@ -102,6 +102,7 @@ class Assistant:
             if midcard is None:
                 break
             mid_txt.append(midcard.display_name)
+
         print(f"""
 hand: {self.__cards[0]}, {self.__cards[1]} || my position: {current_round.my_position}
 middle : {", ".join(mid_txt)}
