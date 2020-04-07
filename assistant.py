@@ -7,7 +7,7 @@ from game_components.round import Round
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.LIVE  # test
+    __RUN_MODE = Run_mode.EXTRACT  # test
     __num_of_players = 6
 
     __table = None
@@ -43,6 +43,7 @@ class Assistant:
                     # with test mode its iterating through a given folder of images and simulate realtime work
                     # on existing images
                     self.__handle_data_gathering()
+                    self.__game.analyze_round()
                     self.__image_operations()
                 except TypeError as e:
                     print(e)

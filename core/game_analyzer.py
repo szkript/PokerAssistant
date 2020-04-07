@@ -72,9 +72,9 @@ class GameAnalyzer:
             elif dealer_position == 3:
                 position = Pos.EARLY
             elif dealer_position == 4:
-                position = Pos.EARLY  # early, bb
+                position = Pos.BIG_BLIND  # early, bb
             elif dealer_position == 5:
-                position = Pos.EARLY  # early, sb
+                position = Pos.SMALL_BLIND  # early, sb
 
         elif self.__num_of_players == 9:
             if dealer_position == 0:
