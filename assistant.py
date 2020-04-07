@@ -7,7 +7,7 @@ from game_components.round import Round
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.EXTRACT  # test
+    __RUN_MODE = Run_mode.LIVE  # test
     __num_of_players = 6
 
     __table = None

@@ -97,10 +97,10 @@ class GameAnalyzer:
             if pair_value >= 7:  # play in every position
                 return Suggest.PLAYABLE
             elif 6 >= pair_value >= 5:  # mid || late
-                if my_position >= Pos.MIDDLE:
+                if my_position.value >= Pos.MIDDLE.value:
                     return Suggest.PLAYABLE
             elif pair_value <= 4:
-                if my_position >= Pos.LATE:   # late only
+                if my_position.value >= Pos.LATE.value:   # late only
                     return Suggest.PLAYABLE
 
     @staticmethod
@@ -122,75 +122,75 @@ class GameAnalyzer:
                         if card_val >= 10:
                             return Suggest.PLAYABLE
                         elif 9 >= card_val >= 6:
-                            if my_position == Pos.DEALER:  # middle or late
+                            if my_position.value >= Pos.MIDDLE.value:  # middle or late
                                 return Suggest.PLAYABLE
                         elif 5 >= card_val >= 2:
-                            if my_position == Pos.DEALER:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 13:  # king
                         if card_val >= 10:
                             return Suggest.PLAYABLE
                         elif 9 == card_val:
-                            if my_position >= Pos.MIDDLE:  # middle or late only
+                            if my_position.value >= Pos.MIDDLE.value:  # middle or late only
                                 return Suggest.PLAYABLE
                         elif 8 >= card_val >= 2:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 12:  # queen
                         if card_val >= 10:
                             return Suggest.PLAYABLE
                         elif 9 >= card_val >= 8:
-                            if my_position >= Pos.MIDDLE:  # middle or late
+                            if my_position.value >= Pos.MIDDLE.value:  # middle or late
                                 return Suggest.PLAYABLE
 
                     elif values == 11:  # jumbo
                         if card_val >= 10:
                             return Suggest.PLAYABLE
                         elif 8 == card_val:
-                            if my_position >= Pos.MIDDLE:  # middle or late
+                            if my_position.value >= Pos.MIDDLE.value:  # middle or late
                                 return Suggest.PLAYABLE
                         elif card_val == 7:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 10:
                         if card_val == 9:
                             return Suggest.PLAYABLE
                         elif card_val == 8:
-                            if my_position >= Pos.MIDDLE:  # mid or late
+                            if my_position.value >= Pos.MIDDLE.value:  # mid or late
                                 return Suggest.PLAYABLE
                         elif card_val == 7:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 9:
                         if card_val == 8:
-                            if my_position >= Pos.MIDDLE:  # mid or late
+                            if my_position.value >= Pos.MIDDLE.value:  # mid or late
                                 return Suggest.PLAYABLE
                         elif 7 >= card_val >= 6:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 8:
                         if 8 >= card_val >= 7:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 7:
                         if 6 >= card_val >= 5:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 6:
                         if card_val == 5:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
 
                     elif values == 5:
                         if card_val == 4:
-                            if my_position >= Pos.LATE:  # late only
+                            if my_position.value >= Pos.LATE.value:  # late only
                                 return Suggest.PLAYABLE
                     # non suit
                     if cards[0].suit != cards[1].suit:
@@ -198,42 +198,42 @@ class GameAnalyzer:
                             if card_val >= 10:
                                 return Suggest.PLAYABLE
                             elif 9 >= card_val >= 7:
-                                if my_position >= Pos.MIDDLE:  # middle or late
+                                if my_position.value >= Pos.MIDDLE.value:  # middle or late
                                     return Suggest.PLAYABLE
 
                         elif values == 13:  # king
                             if card_val >= 11:
                                 return Suggest.PLAYABLE
                             elif 10 == card_val:
-                                if my_position >= Pos.MIDDLE:  # middle or late only
+                                if my_position.value >= Pos.MIDDLE.value:  # middle or late only
                                     return Suggest.PLAYABLE
                             elif 9 == card_val:
-                                if my_position >= Pos.LATE:  # late only
+                                if my_position.value >= Pos.LATE.value:  # late only
                                     return Suggest.PLAYABLE
 
                         elif values == 12:  # queen
                             if 11 >= card_val >= 9:
-                                if my_position >= Pos.MIDDLE:  # middle or late
+                                if my_position.value >= Pos.MIDDLE.value:  # middle or late
                                     return Suggest.PLAYABLE
 
                         elif values == 11:  # jumbo
                             if card_val >= 10:
                                 return Suggest.PLAYABLE
                             elif 8 >= card_val >= 7:
-                                if my_position >= Pos.MIDDLE:  # middle or late
+                                if my_position.value >= Pos.MIDDLE.value:  # middle or late
                                     return Suggest.PLAYABLE
 
                         elif values == 10:
                             if 9 >= card_val >= 8:
-                                if my_position >= Pos.MIDDLE:  # mid or late
+                                if my_position.value >= Pos.MIDDLE.value:  # mid or late
                                     return Suggest.PLAYABLE
 
                         elif values == 9:
                             if 8 >= card_val >= 7:
-                                if my_position >= Pos.LATE:  # late only
+                                if my_position.value >= Pos.LATE.value:  # late only
                                     return Suggest.PLAYABLE
 
                         elif values == 8:
                             if card_val == 7:
-                                if my_position >= Pos.LATE:  # late only
+                                if my_position.value >= Pos.LATE.value:  # late only
                                     return Suggest.PLAYABLE
