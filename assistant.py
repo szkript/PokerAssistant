@@ -7,7 +7,7 @@ from game_components.round import Round
 
 class Assistant:
     # main switch
-    __RUN_MODE = Run_mode.EXTRACT  # test
+    __RUN_MODE = Run_mode.LIVE  # test
     __num_of_players = 6
 
     __table = None
@@ -67,18 +67,7 @@ class Assistant:
                        self.__table.get_current_img_count())
 
         # relocate history into game analyzer?
-        history_len = len(self.round_history)
         self.__update_history(_round)
-        # if same round skip
-        if len(self.round_history) <= history_len:
-            return
-
-        # # TODO: determine move
-        # # calculate pre flop chances
-        # if _round.phase is Phase.PRE_FLOP:
-        #     move = self.__game.calculate_staring_chance(self.__cards, table["my_position"])
-        #     ResultHandler(move)
-        #     print(move)
 
     # game history handler
     def __update_history(self, _round):

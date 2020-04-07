@@ -19,7 +19,7 @@ class GameAnalyzer:
 
     # todo: calc chances
     def analyze_round(self):
-        self.what_to_do = Suggest.FOLD0  # reset
+        self.what_to_do = Suggest.FOLD  # reset
         # if no hand then return
         if self.__current_round is None:
             return
