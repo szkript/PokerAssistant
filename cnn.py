@@ -18,9 +18,9 @@ def new_train():
     # SETTINGS!! here <-
     global_settings = dict(
         number_of_classes=Utils.number_of_training_folders(),
-        steps_per_epoch=500,
+        steps_per_epoch=6000,
         epochs=10,
-        validation_steps=50,
+        validation_steps=600,
         save_model_name="long_classifier.h5"
     )
 
@@ -56,7 +56,7 @@ def continue_training():
         save_model_name="long_classifier.h5"
     )
 
-    classifier = load_model("long_classifier.h5")
+    classifier = load_model("recognizer/long_classifier.h5")
     # Compiling the CNN
     compile_model(classifier)
     training_set, test_set = prepare_dataset()
@@ -129,5 +129,5 @@ def prepare_dataset():
     return training_set, test_set
 
 
-continue_training()
-# new_train()
+# continue_training()
+new_train()
